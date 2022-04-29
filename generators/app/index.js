@@ -224,6 +224,8 @@ module.exports = class extends Generator {
       )}`
     );
 
+    this.log("\n");
+
     this.log(
       `${chalk.cyan(
         "  ▄████ ▓█████  ███▄    █ ▓█████  ██▀███   ▄▄▄     ▄▄▄█████▓ ▒█████   ██▀███      "
