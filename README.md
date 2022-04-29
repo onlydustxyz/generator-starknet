@@ -16,6 +16,8 @@
 
 > This is a development platform to quickly generate, develop, &amp; deploy smart contract based apps on StarkNet.
 
+![StarkNet Generator Demo](resources/demo.gif)
+
 ## Installation
 
 First, install [Yeoman](http://yeoman.io) and generator-starknet using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
@@ -43,8 +45,6 @@ yo starknet
 ## License
 
 MIT © [Abdelhamid Bakhta](https://twitter.com/dimahledba)
-
-
 
 [sonar-url]: https://sonarcloud.io/dashboard?id=abdelhamidbakhta_generator-starknet
 [sonar-quality-gate]: https://sonarcloud.io/api/project_badges/measure?project=abdelhamidbakhta_generator-starknet&metric=alert_status

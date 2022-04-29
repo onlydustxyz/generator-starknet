@@ -12,11 +12,12 @@
 const Generator = require("yeoman-generator");
 const chalk = require("chalk");
 const yosay = require("yosay");
+const art = require("ascii-art");
 const { cwd } = require("process");
 
 module.exports = class extends Generator {
-  initializing() {
-    this._greetings();
+  async initializing() {
+    await this._greetings();
     this.cwd = cwd();
     this.dirName = this.cwd.substring(this.cwd.lastIndexOf("/") + 1);
     this.supportedFrameworks = ["Nile"];
@@ -176,7 +177,9 @@ module.exports = class extends Generator {
     this._goodbye();
   }
 
-  _greetings() {
+  async _greetings() {
+    const rendered = await art.font("StarkNet", "doom").completed();
+    this.log(rendered);
     this.log(yosay(`GM from ${chalk.green("starknet")} generator!`));
   }
 

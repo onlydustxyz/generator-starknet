@@ -38,6 +38,7 @@
     "npm": ">= 4.0.0"
   },
   "dependencies": {
+    "ascii-art": "^2.8.5",
     "chalk": "^2.1.0",
     "yeoman-generator": "^3.1.1",
     "yosay": "^2.0.2"
