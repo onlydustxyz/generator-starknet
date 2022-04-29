@@ -12,7 +12,6 @@
 const Generator = require("yeoman-generator");
 const chalk = require("chalk");
 const yosay = require("yosay");
-const art = require("ascii-art");
 const { cwd } = require("process");
 
 module.exports = class extends Generator {
@@ -178,8 +177,6 @@ module.exports = class extends Generator {
   }
 
   async _greetings() {
-    const rendered = await art.font("StarkNet", "doom").completed();
-    this.log(rendered);
     this.log(yosay(`GM from ${chalk.green("starknet")} generator!`));
   }
 
