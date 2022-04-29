@@ -1,3 +1,5 @@
+# <%= projectName %>
+
 ### Set up the project
 
 #### Create a Python virtual environment
@@ -16,7 +18,7 @@ pip install -r requirements.txt
 ### ⛏️ Compile
 
 ```bash
-nile compile --directory src/$PROJECT_NAME
+nile compile --directory src
 ```
 
 ### 🌡️ Test
@@ -28,4 +30,4 @@ pytest tests
 
 ## 📄 License
 
-**$PROJECT_NAME** is released under the [$LICENSE_NAME](LICENSE).
+**<%= projectName %>** is released under the [MIT](LICENSE).
