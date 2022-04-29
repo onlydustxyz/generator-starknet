@@ -1,0 +1,19 @@
+#!/usr/bin/expect
+spawn yo starknet
+
+expect "the project name"
+send "test-project\r"
+
+expect "root directory"
+send "\r"
+
+expect "framework"
+send "\r"
+
+expect "ERC20"
+send "\r"
+
+expect "ERC721"
+send "\r"
+
+interact

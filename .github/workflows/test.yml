@@ -1,0 +1,24 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  test-project-generation:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install the generator
+        run: npm i -g yo generator-starknet
+      - name: Install the expect utility
+        run: sudo apt-get install -y expect
+      - name: Run the generator
+        run: expect __tests__/generator.exp
+      - name: Check the project has been created
+        run: '[ -f "/home/runner/work/generator-starknet/generator-starknet/requirements.txt" ]'
