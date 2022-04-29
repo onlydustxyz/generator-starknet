@@ -20,16 +20,34 @@
 
 ## Installation
 
+### Global install
+
 First, install [Yeoman](http://yeoman.io) and generator-starknet using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
+With NPM:
+
 ```bash
-npx -p yo -p generator-starknet yo starknet
+npm install -g yo
+npm install -g generator-starknet
+```
+
+With Yarn:
+
+```bash
+yarn global add yo
+yarn global add generator-starknet
 ```
 
 Then generate your new project:
 
 ```bash
 yo starknet
+```
+
+### One shot
+
+```bash
+npx -p yo -p generator-starknet yo starknet
 ```
 
 ## License
