@@ -271,7 +271,9 @@ module.exports = class extends Generator {
         "      ░    ░  ░         ░    ░  ░   ░           ░  ░            ░ ░     ░         "
       )}`
     );
-    this.log(yosay(`GM from ${chalk.green("starknet")} generator!`));
+    this.log(
+      yosay(`${chalk.magenta("GM")} from ${chalk.green("starknet")} generator!`)
+    );
   }
 
   _goodbye() {

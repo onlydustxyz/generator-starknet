@@ -1,6 +1,6 @@
 {
   "name": "generator-starknet",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "This is a development platform to quickly generate, develop, & deploy smart contract based apps on StarkNet.",
   "homepage": "https://github.com/abdelhamidbakhta/generator-starknet",
   "author": {
@@ -38,6 +38,8 @@
     "npm": ">= 4.0.0"
   },
   "dependencies": {
+    "ejs": ">=3.1.7",
+    "glob-parent": ">=5.1.2",
     "chalk": "^2.1.0",
     "yeoman-generator": "^3.1.1",
     "yosay": "^2.0.2"
