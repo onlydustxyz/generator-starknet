@@ -15,10 +15,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install the generator
-        run: npm i -g yo generator-starknet
+        run: npm i -g yo && npm i --production && npm link
       - name: Install the expect utility
         run: sudo apt-get install -y expect
       - name: Run the generator
         run: expect __tests__/generator.exp
       - name: Check the project has been successfully created
-        run: '[ -f "/home/runner/work/generator-starknet/generator-starknet/requirements.txt" ]'
+        run: '[ -f "/home/runner/work/generator-starknet/generator-starknet/tmp/requirements.txt" ]'
