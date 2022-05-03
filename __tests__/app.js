@@ -9,5 +9,7 @@ describe("generator-starknet:app", () => {
       .withPrompts({});
   });
 
-  it("creates files", () => {});
+  it("creates files", () => {
+    // TODO: implement it
+  });
 });
