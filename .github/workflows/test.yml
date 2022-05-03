@@ -20,5 +20,5 @@ jobs:
         run: sudo apt-get install -y expect
       - name: Run the generator
         run: expect __tests__/generator.exp
-      - name: Check the project has been created
+      - name: Check the project has been successfully created
         run: '[ -f "/home/runner/work/generator-starknet/generator-starknet/requirements.txt" ]'
