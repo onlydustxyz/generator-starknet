@@ -1,5 +1,5 @@
-[![generator-starknet-ci Actions Status](https://github.com/abdelhamidbakhta/generator-starknet/workflows/generator-starknet-ci/badge.svg)](https://github.com/abdelhamidbakhta/generator-starknet/actions)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/abdelhamidbakhta/generator-starknet/blob/main/LICENSE)
+[![generator-starknet-ci Actions Status](https://github.com/abdelhamidbakhta/generator-starknet/workflows/generator-starknet-ci/badge.svg)](https://github.com/onlydustxyz/generator-starknet/actions)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/onlydustxyz/generator-starknet/blob/main/LICENSE)
 [![sonar-quality-gate][sonar-quality-gate]][sonar-url][![sonar-bugs][sonar-bugs]][sonar-url] [![sonar-vulnerabilities][sonar-vulnerabilities]][sonar-url]
 
 <p align="center">
@@ -7,8 +7,8 @@
         height="130">
 </p>
 <p align="center">
-    <a href="https://twitter.com/intent/follow?screen_name=dimahledba">
-        <img src="https://img.shields.io/twitter/follow/dimahledba?style=social&logo=twitter"
+    <a href="https://twitter.com/intent/follow?screen_name=onlydust_xyz">
+        <img src="https://img.shields.io/twitter/follow/onlydust_xyz?style=social&logo=twitter"
             alt="follow on Twitter"></a>
 </p>
 
