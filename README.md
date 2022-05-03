@@ -44,7 +44,7 @@ yo starknet
 
 ## License
 
-MIT © [Abdelhamid Bakhta](https://twitter.com/dimahledba)
+MIT © [Only Dust](https://onlydust.xyz/)
 
 [sonar-url]: https://sonarcloud.io/dashboard?id=abdelhamidbakhta_generator-starknet
 [sonar-quality-gate]: https://sonarcloud.io/api/project_badges/measure?project=abdelhamidbakhta_generator-starknet&metric=alert_status
