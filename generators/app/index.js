@@ -90,7 +90,7 @@ module.exports = class extends Generator {
       this._copyNileSpecificFiles();
     }
 
-    this.props.srcDir = `${this.props.outputDir}/src`;
+    this.props.srcDir = `${this.props.outputDir}/contracts`;
 
     this._copyReadme();
     this._copyGitIgnore();
@@ -170,7 +170,7 @@ module.exports = class extends Generator {
     );
   }
 
-  install() {}
+  install() { }
 
   end() {
     this._goodbye();
