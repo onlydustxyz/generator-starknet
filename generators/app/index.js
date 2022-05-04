@@ -281,7 +281,7 @@ module.exports = class extends Generator {
     this.log(`Go to project: ${chalk.green(`cd ${this.props.outputDir}`)}`);
     this.log(
       `Follow the instructions on ${chalk.blue(
-        "README.MD"
+        "README.md"
       )} to setup, compile and tests the contracts.`
     );
   }

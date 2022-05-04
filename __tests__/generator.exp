@@ -5,7 +5,7 @@ expect "the project name"
 send "test-project\r"
 
 expect "root directory"
-send "\r"
+send -- "./tmp\r"
 
 expect "framework"
 send "\r"
@@ -16,4 +16,4 @@ send "\r"
 expect "ERC721"
 send "\r"
 
-interact
+expect eof
