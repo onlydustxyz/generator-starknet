@@ -94,6 +94,10 @@ module.exports = class extends Generator {
       this._copyNileSpecificFiles();
     }
 
+    if (this.props.framework === HARDHAT) {
+      this._copyHardhatSpecificFiles();
+    }
+
     this.props.srcDir = `${this.props.outputDir}/src`;
 
     this._copyReadme();

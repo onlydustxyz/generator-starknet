@@ -12,13 +12,13 @@ source env/bin/activate
 #### 📦 Install the requirements
 
 ```bash
-pip install -r requirements.txt
+npm install @shardlabs/starknet-hardhat-plugin --save-dev
 ```
 
 ### ⛏️ Compile
 
 ```bash
-nile compile --directory src
+npx hardhat starknet-compile
 ```
 
 ### 🌡️ Test
