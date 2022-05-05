@@ -1,0 +1,4 @@
+wheel
+cairo-lang
+@shardlabs/starknet-hardhat-plugin
+openzeppelin-cairo-contracts
