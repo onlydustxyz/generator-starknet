@@ -169,7 +169,7 @@ module.exports = class extends Generator {
 
     if (this.props.wantERC721) {
       this.fs.copyTpl(
-        this.templatePath(`${HARDHAT}/tests/ERC721.py`),
+        this.templatePath(`${HARDHAT}/tests/ERC721.js`),
         this.destinationPath(`${this.props.outputDir}/tests/ERC721.js`),
         this.props
       );
