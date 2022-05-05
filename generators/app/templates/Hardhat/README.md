@@ -26,7 +26,7 @@ npx hardhat starknet-compile src/
 
 ```bash
 # Run all tests
-pytest tests
+npx hardhat test
 ```
 
 ## 📄 License
