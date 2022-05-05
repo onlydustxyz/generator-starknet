@@ -17,7 +17,7 @@ module.exports = {
   },
   paths: {
     // Where are our contracts: ./contracts
-    starknetSources: __dirname + "/contracts",
+    starknetSources: __dirname + "/src",
     // Where are our artifacts (build contract): ./stark-artifacts, not use repository "artifacts" which is reserved by hardhat to solidity
     starknetArtifacts: __dirname + "/stark-artifacts",
   },

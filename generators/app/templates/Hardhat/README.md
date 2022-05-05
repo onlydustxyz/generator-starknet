@@ -10,15 +10,16 @@ source env/bin/activate
 ```
 
 #### 📦 Install the requirements
-
+For this part we consider you have docker installed. If not click [here.](hhttps://docs.docker.com/engine/install/)
 ```bash
-npm install @shardlabs/starknet-hardhat-plugin --save-dev
+npm install
+docker run -it -p 127.0.0.1:5000:5000 shardlabs/starknet-devnet
 ```
 
 ### ⛏️ Compile
 
 ```bash
-npx hardhat starknet-compile
+npx hardhat starknet-compile src/
 ```
 
 ### 🌡️ Test

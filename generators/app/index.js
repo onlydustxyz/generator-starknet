@@ -148,11 +148,32 @@ module.exports = class extends Generator {
 
   _copyHardhatSpecificFiles() {
     this.fs.copyTpl(
-      this.templatePath(`${HARDHAT}/requirements.txt`),
-      this.destinationPath(`${this.props.outputDir}/requirements.txt`),
+      this.templatePath(`${HARDHAT}/hardhat.config.js`),
+      this.destinationPath(`${this.props.outputDir}/hardhat.config.js`),
       this.props
     );
-    // TO FINISH
+
+    this.fs.copyTpl(
+      this.templatePath(`${HARDHAT}/package.json`),
+      this.destinationPath(`${this.props.outputDir}/package.json`),
+      this.props
+    );
+
+    if (this.props.wantERC20) {
+      this.fs.copyTpl(
+        this.templatePath(`${HARDHAT}/tests/ERC20.js`),
+        this.destinationPath(`${this.props.outputDir}/tests/ERC20.js`),
+        this.props
+      );
+    }
+
+    if (this.props.wantERC721) {
+      this.fs.copyTpl(
+        this.templatePath(`${HARDHAT}/tests/ERC721.py`),
+        this.destinationPath(`${this.props.outputDir}/tests/ERC721.js`),
+        this.props
+      );
+    }
   }
 
   _copyReadme() {
