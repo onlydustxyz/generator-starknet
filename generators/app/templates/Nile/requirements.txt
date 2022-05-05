@@ -1,4 +1,6 @@
+wheel
 cairo-lang
 cairo-nile
 openzeppelin-cairo-contracts
+pytest-cairo
 tox

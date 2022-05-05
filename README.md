@@ -21,7 +21,8 @@
 
 ## Installation
 
-First, install [Yeoman](http://yeoman.io) and generator-starknet using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+First, install [Yeoman](http://yeoman.io) and generator-starknet using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).  
+Make sure you are using a python 3.7.
 
 With NPM:
 
@@ -43,6 +44,7 @@ Then generate your new project:
 yo starknet
 ```
 
+Now follow what is written in the console
 ## License
 
 MIT © [Only Dust](https://onlydust.xyz/)
