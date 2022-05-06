@@ -2,12 +2,6 @@
 
 ### Set up the project
 
-#### Install the hardhat plugin with the extension for starknet 
-
-```bash
-npm install --save-dev hardhat @shardlabs/starknet-hardhat-plugin
-```
-
 #### 📦 Install the requirements
 For this part we consider you have docker installed. If not click [here.](hhttps://docs.docker.com/engine/install/)
 ```bash
