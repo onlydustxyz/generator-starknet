@@ -1,25 +1,31 @@
 const { expect } = require("chai");
 const { starknet } = require("hardhat");
 
-describe("Test contract : ER721", function () {
+const OWNER = 42
+const NAME = starknet.shortStringToBigInt("Starknet NFT")
+const SYMBOL = starknet.shortStringToBigInt("STARK")
+
+describe("Test contract : ERC721", function () {
 
     let contractFactory;
     let contract;
-    this.timeout(120000);
+    this.timeout(300_000);
 
     before(async () => {
         contractFactory = await starknet.getContractFactory("ERC721");
-        contract = await contractFactory.deploy();
+        contract = await contractFactory.deploy({
+            name: NAME,
+            symbol: SYMBOL,
+            owner: OWNER,
+        });
     });
 
-    beforeEach(async () => {
-        identification++;
-    });
-
-    describe("Testing creation & empty", function () {
-        it("Should create a stack and assert that it is empty.", async function () {
-            const { isEmpty } = await contract.call("empty", { identification });
-            expect(isEmpty).to.equal(BigInt(1));
+    describe("Deploy", function () {
+        it("Should deploy an ERC721 contract and make sure it has the correct name", async function () {
+            const { name } = await contract.call("name", {});
+            expect(name).to.equal(NAME);
         });
     });
 });
+
+

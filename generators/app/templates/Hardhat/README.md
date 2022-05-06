@@ -39,4 +39,5 @@ npx hardhat test
 
 ## 📄 License
 
+
 **<%= projectName %>** is released under the [MIT](LICENSE).
