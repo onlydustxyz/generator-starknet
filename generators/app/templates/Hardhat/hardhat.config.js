@@ -1,18 +1,18 @@
-// Add extension to starknet
 require("@shardlabs/starknet-hardhat-plugin");
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  // We define our test network, which we will run locally with.
+  starknet: {
+    network: "develop"
+  },
   networks: {
     develop: {
-      url: "http://127.0.0.1:5000"
+      url: "http://127.0.0.1:5050"
     }
   },
   cairo: {
-    // Version of the plugin which is execute on the docker
     version: "0.6.2"
   },
   paths: {
@@ -22,7 +22,7 @@ module.exports = {
     starknetArtifacts: __dirname + "/stark-artifacts",
   },
   mocha: {
-    // set up the network to run our test
     starknetNetwork: "develop"
   }
 };
+
