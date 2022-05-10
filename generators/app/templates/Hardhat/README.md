@@ -3,7 +3,7 @@
 ### Set up the project
 
 #### 📦 Install the requirements
-For this part we consider you have docker installed. If not click [here.](hhttps://docs.docker.com/engine/install/)
+For this part we consider you have docker installed. If not click [here.](https://docs.docker.com/engine/install/)
 ```bash
 npm install
 docker run -it -p 127.0.0.1:5000:5000 shardlabs/starknet-devnet &
