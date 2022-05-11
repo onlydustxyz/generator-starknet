@@ -14,12 +14,16 @@ const chalk = require("chalk");
 const yosay = require("yosay");
 const { cwd } = require("process");
 
+const NILE = "Nile";
+const HARDHAT = "Hardhat";
+const PROTOSTAR = "Protostar";
+
 module.exports = class extends Generator {
   async initializing() {
     await this._greetings();
     this.cwd = cwd();
     this.dirName = this.cwd.substring(this.cwd.lastIndexOf("/") + 1);
-    this.supportedFrameworks = ["Nile"];
+    this.supportedFrameworks = [NILE, HARDHAT];
   }
 
   // Prompt user for configuration choices
@@ -51,8 +55,8 @@ module.exports = class extends Generator {
         type: "list",
         name: "framework",
         message: "What framework do you want to use?",
-        choices: ["Nile", "Protostar", "Hardhat"],
-        default: "Nile",
+        choices: [NILE, PROTOSTAR, HARDHAT],
+        default: NILE,
         store: true,
       },
       {
@@ -86,8 +90,12 @@ module.exports = class extends Generator {
       process.exit(1);
     }
 
-    if (this.props.framework === "Nile") {
+    if (this.props.framework === NILE) {
       this._copyNileSpecificFiles();
+    }
+
+    if (this.props.framework === HARDHAT) {
+      this._copyHardhatSpecificFiles();
     }
 
     this.props.srcDir = `${this.props.outputDir}/src`;
@@ -107,23 +115,23 @@ module.exports = class extends Generator {
 
   _copyNileSpecificFiles() {
     this.fs.copyTpl(
-      this.templatePath(`Nile/requirements.txt`),
+      this.templatePath(`${NILE}/requirements.txt`),
       this.destinationPath(`${this.props.outputDir}/requirements.txt`),
       this.props
     );
     this.fs.copyTpl(
-      this.templatePath(`Nile/pytest.ini`),
+      this.templatePath(`${NILE}/pytest.ini`),
       this.destinationPath(`${this.props.outputDir}/pytest.ini`),
       this.props
     );
     this.fs.copyTpl(
-      this.templatePath(`Nile/tests/utils.py`),
+      this.templatePath(`${NILE}/tests/utils.py`),
       this.destinationPath(`${this.props.outputDir}/tests/utils.py`),
       this.props
     );
     if (this.props.wantERC20) {
       this.fs.copyTpl(
-        this.templatePath(`Nile/tests/test_ERC20.py`),
+        this.templatePath(`${NILE}/tests/test_ERC20.py`),
         this.destinationPath(`${this.props.outputDir}/tests/test_ERC20.py`),
         this.props
       );
@@ -131,8 +139,38 @@ module.exports = class extends Generator {
 
     if (this.props.wantERC721) {
       this.fs.copyTpl(
-        this.templatePath(`Nile/tests/test_ERC721.py`),
+        this.templatePath(`${NILE}/tests/test_ERC721.py`),
         this.destinationPath(`${this.props.outputDir}/tests/test_ERC721.py`),
+        this.props
+      );
+    }
+  }
+
+  _copyHardhatSpecificFiles() {
+    this.fs.copyTpl(
+      this.templatePath(`${HARDHAT}/hardhat.config.js`),
+      this.destinationPath(`${this.props.outputDir}/hardhat.config.js`),
+      this.props
+    );
+
+    this.fs.copyTpl(
+      this.templatePath(`${HARDHAT}/package.json`),
+      this.destinationPath(`${this.props.outputDir}/package.json`),
+      this.props
+    );
+
+    if (this.props.wantERC20) {
+      this.fs.copyTpl(
+        this.templatePath(`${HARDHAT}/tests/ERC20.js`),
+        this.destinationPath(`${this.props.outputDir}/tests/ERC20.js`),
+        this.props
+      );
+    }
+
+    if (this.props.wantERC721) {
+      this.fs.copyTpl(
+        this.templatePath(`${HARDHAT}/tests/ERC721.js`),
+        this.destinationPath(`${this.props.outputDir}/tests/ERC721.js`),
         this.props
       );
     }
@@ -170,107 +208,56 @@ module.exports = class extends Generator {
     );
   }
 
-  install() { }
+  install() {}
 
   end() {
     this._goodbye();
   }
 
   async _greetings() {
-    this.log("\n");
-    this.log(
-      `${chalk.magenta(
-        "  ██████ ▄▄▄█████▓ ▄▄▄       ██▀███   ██ ▄█▀ ███▄    █ ▓█████▄▄▄█████▓"
-      )}`
-    );
-    this.log(
-      `${chalk.magenta(
-        "▒██    ▒ ▓  ██▒ ▓▒▒████▄    ▓██ ▒ ██▒ ██▄█▒  ██ ▀█   █ ▓█   ▀▓  ██▒ ▓▒"
-      )}`
-    );
-    this.log(
-      `${chalk.magenta(
-        "░ ▓██▄   ▒ ▓██░ ▒░▒██  ▀█▄  ▓██ ░▄█ ▒▓███▄░ ▓██  ▀█ ██▒▒███  ▒ ▓██░ ▒░"
-      )}`
-    );
-    this.log(
-      `${chalk.magenta(
-        "  ▒   ██▒░ ▓██▓ ░ ░██▄▄▄▄██ ▒██▀▀█▄  ▓██ █▄ ▓██▒  ▐▌██▒▒▓█  ▄░ ▓██▓ ░ "
-      )}`
-    );
-    this.log(
-      `${chalk.magenta(
-        "▒██████▒▒  ▒██▒ ░  ▓█   ▓██▒░██▓ ▒██▒▒██▒ █▄▒██░   ▓██░░▒████▒ ▒██▒ ░ "
-      )}`
-    );
-    this.log(
-      `${chalk.magenta(
-        "▒ ▒▓▒ ▒ ░  ▒ ░░    ▒▒   ▓▒█░░ ▒▓ ░▒▓░▒ ▒▒ ▓▒░ ▒░   ▒ ▒ ░░ ▒░ ░ ▒ ░░       "
-      )}`
-    );
-    this.log(
-      `${chalk.magenta(
-        "░ ░▒  ░ ░    ░      ▒   ▒▒ ░  ░▒ ░ ▒░░ ░▒ ▒░░ ░░   ░ ▒░ ░ ░  ░   ░        "
-      )}`
-    );
-    this.log(
-      `${chalk.magenta(
-        "░  ░  ░    ░        ░   ▒     ░░   ░ ░ ░░ ░    ░   ░ ░    ░    ░          "
-      )}`
-    );
-    this.log(
-      `${chalk.magenta(
-        "      ░                 ░  ░   ░     ░  ░            ░    ░  ░            "
-      )}`
-    );
+    let starknetStr = "";
+    starknetStr +=
+      "  ██████ ▄▄▄█████▓ ▄▄▄       ██▀███   ██ ▄█▀ ███▄    █ ▓█████▄▄▄█████▓\n";
+    starknetStr +=
+      "▒██    ▒ ▓  ██▒ ▓▒▒████▄    ▓██ ▒ ██▒ ██▄█▒  ██ ▀█   █ ▓█   ▀▓  ██▒ ▓▒\n";
+    starknetStr +=
+      "░ ▓██▄   ▒ ▓██░ ▒░▒██  ▀█▄  ▓██ ░▄█ ▒▓███▄░ ▓██  ▀█ ██▒▒███  ▒ ▓██░ ▒░\n";
+    starknetStr +=
+      "  ▒   ██▒░ ▓██▓ ░ ░██▄▄▄▄██ ▒██▀▀█▄  ▓██ █▄ ▓██▒  ▐▌██▒▒▓█  ▄░ ▓██▓ ░\n";
+    starknetStr +=
+      "▒██████▒▒  ▒██▒ ░  ▓█   ▓██▒░██▓ ▒██▒▒██▒ █▄▒██░   ▓██░░▒████▒ ▒██▒ ░\n";
+    starknetStr +=
+      "▒ ▒▓▒ ▒ ░  ▒ ░░    ▒▒   ▓▒█░░ ▒▓ ░▒▓░▒ ▒▒ ▓▒░ ▒░   ▒ ▒ ░░ ▒░ ░ ▒ ░░\n";
+    starknetStr +=
+      "░ ░▒  ░ ░    ░      ▒   ▒▒ ░  ░▒ ░ ▒░░ ░▒ ▒░░ ░░   ░ ▒░ ░ ░  ░   ░\n";
+    starknetStr +=
+      "░  ░  ░    ░        ░   ▒     ░░   ░ ░ ░░ ░    ░   ░ ░    ░    ░\n";
+    starknetStr +=
+      "      ░                 ░  ░   ░     ░  ░            ░    ░  ░\n";
+
+    let generatorStr = "";
+    generatorStr +=
+      "  ▄████ ▓█████  ███▄    █ ▓█████  ██▀███   ▄▄▄     ▄▄▄█████▓ ▒█████   ██▀███\n";
+    generatorStr +=
+      " ██▒ ▀█▒▓█   ▀  ██ ▀█   █ ▓█   ▀ ▓██ ▒ ██▒▒████▄   ▓  ██▒ ▓▒▒██▒  ██▒▓██ ▒ ██▒\n";
+    generatorStr +=
+      "▒██░▄▄▄░▒███   ▓██  ▀█ ██▒▒███   ▓██ ░▄█ ▒▒██  ▀█▄ ▒ ▓██░ ▒░▒██░  ██▒▓██ ░▄█ ▒\n";
+    generatorStr +=
+      "░▓█  ██▓▒▓█  ▄ ▓██▒  ▐▌██▒▒▓█  ▄ ▒██▀▀█▄  ░██▄▄▄▄██░ ▓██▓ ░ ▒██   ██░▒██▀▀█▄\n";
+    generatorStr +=
+      "░▒▓███▀▒░▒████▒▒██░   ▓██░░▒████▒░██▓ ▒██▒ ▓█   ▓██▒ ▒██▒ ░ ░ ████▓▒░░██▓ ▒██▒\n";
+    generatorStr +=
+      " ░▒   ▒ ░░ ▒░ ░░ ▒░   ▒ ▒ ░░ ▒░ ░░ ▒▓ ░▒▓░ ▒▒   ▓▒█░ ▒ ░░   ░ ▒░▒░▒░ ░ ▒▓ ░▒▓░\n";
+    generatorStr +=
+      "  ░   ░  ░ ░  ░░ ░░   ░ ▒░ ░ ░  ░  ░▒ ░ ▒░  ▒   ▒▒ ░   ░      ░ ▒ ▒░   ░▒ ░ ▒░\n";
+    generatorStr +=
+      "░ ░   ░    ░      ░   ░ ░    ░     ░░   ░   ░   ▒    ░      ░ ░ ░ ▒    ░░   ░\n";
+    generatorStr +=
+      "      ░    ░  ░         ░    ░  ░   ░           ░  ░            ░ ░     ░\n";
 
     this.log("\n");
-
-    this.log(
-      `${chalk.cyan(
-        "  ▄████ ▓█████  ███▄    █ ▓█████  ██▀███   ▄▄▄     ▄▄▄█████▓ ▒█████   ██▀███      "
-      )}`
-    );
-    this.log(
-      `${chalk.cyan(
-        " ██▒ ▀█▒▓█   ▀  ██ ▀█   █ ▓█   ▀ ▓██ ▒ ██▒▒████▄   ▓  ██▒ ▓▒▒██▒  ██▒▓██ ▒ ██▒    "
-      )}`
-    );
-    this.log(
-      `${chalk.cyan(
-        "▒██░▄▄▄░▒███   ▓██  ▀█ ██▒▒███   ▓██ ░▄█ ▒▒██  ▀█▄ ▒ ▓██░ ▒░▒██░  ██▒▓██ ░▄█ ▒    "
-      )}`
-    );
-    this.log(
-      `${chalk.cyan(
-        "░▓█  ██▓▒▓█  ▄ ▓██▒  ▐▌██▒▒▓█  ▄ ▒██▀▀█▄  ░██▄▄▄▄██░ ▓██▓ ░ ▒██   ██░▒██▀▀█▄      "
-      )}`
-    );
-    this.log(
-      `${chalk.cyan(
-        "░▒▓███▀▒░▒████▒▒██░   ▓██░░▒████▒░██▓ ▒██▒ ▓█   ▓██▒ ▒██▒ ░ ░ ████▓▒░░██▓ ▒██▒    "
-      )}`
-    );
-    this.log(
-      `${chalk.cyan(
-        " ░▒   ▒ ░░ ▒░ ░░ ▒░   ▒ ▒ ░░ ▒░ ░░ ▒▓ ░▒▓░ ▒▒   ▓▒█░ ▒ ░░   ░ ▒░▒░▒░ ░ ▒▓ ░▒▓░    "
-      )}`
-    );
-    this.log(
-      `${chalk.cyan(
-        "  ░   ░  ░ ░  ░░ ░░   ░ ▒░ ░ ░  ░  ░▒ ░ ▒░  ▒   ▒▒ ░   ░      ░ ▒ ▒░   ░▒ ░ ▒░    "
-      )}`
-    );
-    this.log(
-      `${chalk.cyan(
-        "░ ░   ░    ░      ░   ░ ░    ░     ░░   ░   ░   ▒    ░      ░ ░ ░ ▒    ░░   ░     "
-      )}`
-    );
-    this.log(
-      `${chalk.cyan(
-        "      ░    ░  ░         ░    ░  ░   ░           ░  ░            ░ ░     ░         "
-      )}`
-    );
+    this.log(`${chalk.magenta(starknetStr)}`);
+    this.log(`${chalk.cyan(generatorStr)}`);
     this.log(
       yosay(`${chalk.magenta("GM")} from ${chalk.green("starknet")} generator!`)
     );
