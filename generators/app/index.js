@@ -136,11 +136,17 @@ module.exports = class extends Generator {
         this.props
       );
     }
-
     if (this.props.wantERC721) {
       this.fs.copyTpl(
         this.templatePath(`${NILE}/tests/test_ERC721.py`),
         this.destinationPath(`${this.props.outputDir}/tests/test_ERC721.py`),
+        this.props
+      );
+    }
+    if (this.props.wantERC20 || this.props.wantERC721) {
+      this.fs.copyTpl(
+        this.templatePath(`${NILE}/.github/workflows/python-app.yml`),
+        this.destinationPath(`${this.props.outputDir}/.github/workflows/python-app.yml`),
         this.props
       );
     }
@@ -208,7 +214,7 @@ module.exports = class extends Generator {
     );
   }
 
-  install() {}
+  install() { }
 
   end() {
     this._goodbye();
