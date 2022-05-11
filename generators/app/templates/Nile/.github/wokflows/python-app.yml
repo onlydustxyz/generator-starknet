@@ -1,0 +1,38 @@
+# This workflow will install Python dependencies, cairo, its dependencies and run all the tests with a single version of Python
+
+name: Pytests cairo
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.7"
+    - name: Install venv
+      run: |
+        python3.7 -m venv ~/cairo_venv
+        source ~/cairo_venv/bin/activate
+    - name: Install packages
+      run: |
+        pip3 install wheel
+        pip3 install ecdsa fastecdsa sympy
+        sudo apt install -y libgmp3-dev
+        pip3 install cairo-lang
+        pip3 install contextvars
+    - name: Test with pytest
+      run: |
+        pytest
