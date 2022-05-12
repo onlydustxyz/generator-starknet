@@ -48,12 +48,14 @@ Now follow what is written in the console
 
 ## Want to get involved?
 If you are reading this part it is probably because you want to get involve and help us expand this git repository.  
-First you can have a look at the [issues open](https://github.com/onlydustxyz/generator-starknet/issues) and try by picking one you think you can help on.  
-Then you should start by forking this repository and clone it to your machine.  
-If you didn't change the [yeoman app](https://github.com/gaetbout/generator-starknet/blob/main/generators/app/index.js) then you can probably make a pull request (make sure what you are submitting is working though).    
+First you can have a look at the [issues open](https://github.com/onlydustxyz/generator-starknet/issues). Read them and try to find one you think you can help on.  
+If you don't find any issue that you can work on but still find anything that can be improved, feel free to make a PR!  
 
-If you are updating the yeoman application it would be better that you test it locally.  
-So install yeoman and yeoman-generator and link the current repository as the yeomon instance:
+The first step should always be to fork this repository.  
+If you didn't change the [yeoman app](./generators/app/index.js) then you can probably stop reading and just make a pull request (make sure what you are submitting is working).    
+
+If you are updating the yeoman application it would be better that you test it locally first.  
+So install yeoman and yeoman-generator and link the current repository as the yeoman instance:
 ```bash
 npm install -g yo
 npm install -g yeoman-generator
@@ -63,9 +65,9 @@ Npm link will allow to link a module to a local directory. So whenever you'll ru
 ```bash
 yo starknet
 ```
-It'll use the app present in the folder you were when doing the command instead of looking into the node_modules.  
+It'll use the app present in the folder you were when doing the command instead of looking into the node_modules directory .  
 You can now try it locally!  
-Once you are sure your dev is over just submit a pull request  
+Once you are sure your dev is over just submit a pull request.  
 
 
 **Don't forget to insert the issue you are trying to solve in the name (#issueNumber), and add a small description with the relevant tags.**
