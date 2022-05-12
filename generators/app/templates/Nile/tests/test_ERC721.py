@@ -2,8 +2,7 @@
 import pytest
 from starkware.starknet.testing.starknet import Starknet
 from utils import (
-    assert_revert, cached_contract, contract_path, get_contract_def,
-    to_uint, assert_event_emitted, str_to_felt, Signer
+    cached_contract, get_contract_def, str_to_felt
 )
 
 
