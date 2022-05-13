@@ -127,6 +127,8 @@ module.exports = class extends Generator {
       process.exit(1);
     }
 
+    this.props.srcDir = `${this.props.outputDir}/src`;
+
     if (this.props.framework === NILE) {
       this._copyNileSpecificFiles();
     }
@@ -134,8 +136,6 @@ module.exports = class extends Generator {
     if (this.props.framework === HARDHAT) {
       this._copyHardhatSpecificFiles();
     }
-
-    this.props.srcDir = `${this.props.outputDir}/src`;
 
     this._copyReadme();
     this._copyGitIgnore();
@@ -259,6 +259,14 @@ module.exports = class extends Generator {
         this.destinationPath(`${this.props.outputDir}/tests/ERC721.js`),
         this.props,
         noMarkup
+      );
+    }
+
+    if (this.props.erc20upgradeable || this.props.erc721upgradeable) {
+      this.fs.copyTpl(
+        this.templatePath("contracts/Proxy.cairo"),
+        this.destinationPath(`${this.props.srcDir}/Proxy.cairo`),
+        this.props
       );
     }
   }
