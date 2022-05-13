@@ -67,12 +67,6 @@ async def test_initial_supply_belong_to_owner(erc20_factory):
     execution_info = await erc20_factory.balanceOf(account=OWNER).call()
     assert execution_info.result.balance == INIT_SUPPLY
 
-
-@pytest.mark.asyncio
-async def test_initial_supply_belong_to_owner(erc20_factory):
-    execution_info = await erc20_factory.balanceOf(account=OWNER).call()
-    assert execution_info.result.balance == INIT_SUPPLY
-
 @pytest.mark.asyncio
 async def test_initial_allowance_of_owner(erc20_factory):
     execution_info = await erc20_factory.allowance(owner=OWNER, spender=SPENDER).call()
