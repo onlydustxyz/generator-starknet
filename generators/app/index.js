@@ -171,14 +171,13 @@ module.exports = class extends Generator {
         ...this.props,
         ...getERC20ConstructorProps(this.props),
       };
+      const templateFile = this.props.customizeERC20
+        ? this.props.erc20upgradeable
+          ? "test_ERC20_Upgradeable.py"
+          : "test_ERC20_Custom.py"
+        : "test_ERC20_Default.py";
       this.fs.copyTpl(
-        this.templatePath(
-          `${NILE}/tests/${
-            this.props.erc20upgradeable
-              ? "test_ERC20_Upgradeable.py"
-              : "test_ERC20.py"
-          }`
-        ),
+        this.templatePath(`${NILE}/tests/${templateFile}`),
         this.destinationPath(`${this.props.outputDir}/tests/test_ERC20.py`),
         this.props,
         noMarkup

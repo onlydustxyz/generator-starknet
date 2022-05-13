@@ -19,15 +19,10 @@ function getConstructorProps(props) {
   }
 
   function nileDefaults() {
+    // Not needed since default template has no string substitution
     return {
-      testingVars: formatLines([
-        "OWNER = 42",
-        'NAME = str_to_felt("Starknet")',
-        'SYMBOL = str_to_felt("STARK")',
-        "INIT_SUPPLY = to_uint(1000)",
-        "DECIMALS = 18",
-      ]),
-      constructorCalldata: "NAME, SYMBOL, DECIMALS, *INIT_SUPPLY, OWNER",
+      testingVars: "",
+      constructorCalldata: "",
     };
   }
 
