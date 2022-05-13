@@ -1,9 +1,7 @@
 const { expect } = require("chai");
 const { starknet } = require("hardhat");
 
-const OWNER = 42
-const NAME = starknet.shortStringToBigInt("Starknet NFT")
-const SYMBOL = starknet.shortStringToBigInt("STARK")
+<%= testingVars %>
 
 describe("Test contract : ERC721", function () {
 
@@ -14,9 +12,7 @@ describe("Test contract : ERC721", function () {
     before(async () => {
         contractFactory = await starknet.getContractFactory("ERC721");
         contract = await contractFactory.deploy({
-            name: NAME,
-            symbol: SYMBOL,
-            owner: OWNER,
+            <%= constructorCalldata %>
         });
     });
 

@@ -1,11 +1,7 @@
 const { expect } = require("chai");
 const { starknet } = require("hardhat");
 
-const OWNER = 42
-const NAME = starknet.shortStringToBigInt("Starknet")
-const SYMBOL = starknet.shortStringToBigInt("STARK")
-const INIT_SUPPLY = { low: 1000, high: 0 }
-const DECIMALS = 18
+<%= testingVars %>
 
 describe("Test contract : ERC20", function () {
 
@@ -16,11 +12,7 @@ describe("Test contract : ERC20", function () {
     before(async () => {
         contractFactory = await starknet.getContractFactory("ERC20");
         contract = await contractFactory.deploy({
-            name: NAME,
-            symbol: SYMBOL,
-            decimals: DECIMALS,
-            initial_supply: INIT_SUPPLY,
-            recipient: OWNER
+            <%= constructorCalldata %>
         });
     });
 

@@ -5,13 +5,8 @@ from utils import (
     cached_contract, get_contract_def, to_uint, str_to_felt
 )
 
-
 # testing vars
-OWNER=42
-NAME = str_to_felt("Starknet")
-SYMBOL = str_to_felt("STARK")
-INIT_SUPPLY = to_uint(1000)
-DECIMALS = 18
+<%= testingVars %>
 
 @pytest.fixture
 def contract_defs():
@@ -24,7 +19,7 @@ async def erc20_init(contract_defs):
     starknet = await Starknet.empty()
     erc20 = await starknet.deploy(
         contract_def=erc20_def,
-        constructor_calldata=[NAME, SYMBOL, DECIMALS, *INIT_SUPPLY, OWNER]
+        constructor_calldata=[<%= constructorCalldata %>]
     )
     return (
         starknet.state,

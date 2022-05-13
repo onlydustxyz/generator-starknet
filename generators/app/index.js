@@ -14,9 +14,17 @@ const chalk = require("chalk");
 const yosay = require("yosay");
 const { cwd } = require("process");
 
-const NILE = "Nile";
-const HARDHAT = "Hardhat";
-const PROTOSTAR = "Protostar";
+const { NILE, HARDHAT, PROTOSTAR } = require("./constants");
+const { erc20prompts, erc20print } = require("./erc20");
+const { erc721prompts, erc721print } = require("./erc721");
+const { getERC20ConstructorProps } = require("./erc20-test-props");
+const { getERC721ConstructorProps } = require("./erc721-test-props");
+
+const noMarkup = {
+  escape: (markup) => {
+    return markup;
+  },
+};
 
 module.exports = class extends Generator {
   async initializing() {
@@ -27,7 +35,7 @@ module.exports = class extends Generator {
   }
 
   // Prompt user for configuration choices
-  prompting() {
+  async prompting() {
     const autoInstallPrompt = {
       type: "confirm",
       name: "wantInstall",
@@ -65,21 +73,50 @@ module.exports = class extends Generator {
         message: "Do you want to add an ERC20 token contract?",
         store: true,
       },
-      {
-        type: "confirm",
-        name: "wantERC721",
-        message: "Do you want to add an ERC721 NFT contract?",
-        store: true,
-      },
     ];
+    await this._processPrompts(prompts);
 
-    if (includeAutoInstallPrompt) {
-      prompts.push(autoInstallPrompt);
+    if (this.props.wantERC20) {
+      await this._processPrompts({
+        type: "confirm",
+        name: "customizeERC20",
+        message: "Use OpenZeppelin Contracts Wizard to customize ERC20?",
+        default: true,
+      });
+      if (this.props.customizeERC20) {
+        await this._processPrompts(erc20prompts);
+      }
     }
 
-    return this.prompt(prompts).then((props) => {
-      this.props = props;
+    await this._processPrompts({
+      type: "confirm",
+      name: "wantERC721",
+      message: "Do you want to add an ERC721 NFT contract?",
+      store: true,
     });
+
+    if (this.props.wantERC721) {
+      await this._processPrompts({
+        type: "confirm",
+        name: "customizeERC721",
+        message: "Use OpenZeppelin Contracts Wizard to customize ERC721?",
+        store: true,
+      });
+      if (this.props.customizeERC721) {
+        await this._processPrompts(erc721prompts);
+      }
+    }
+
+    if (includeAutoInstallPrompt) {
+      await this._processPrompts(autoInstallPrompt);
+    }
+  }
+
+  async _processPrompts(questions) {
+    this.props = {
+      ...this.props,
+      ...(await this.prompt(questions)),
+    };
   }
 
   // Write the generated files
@@ -130,23 +167,49 @@ module.exports = class extends Generator {
       this.props
     );
     if (this.props.wantERC20) {
+      this.props = {
+        ...this.props,
+        ...getERC20ConstructorProps(this.props),
+      };
       this.fs.copyTpl(
-        this.templatePath(`${NILE}/tests/test_ERC20.py`),
+        this.templatePath(
+          `${NILE}/tests/${
+            this.props.erc20upgradeable
+              ? "test_ERC20_Upgradeable.py"
+              : "test_ERC20.py"
+          }`
+        ),
         this.destinationPath(`${this.props.outputDir}/tests/test_ERC20.py`),
-        this.props
+        this.props,
+        noMarkup
       );
     }
+
     if (this.props.wantERC721) {
+      this.props = {
+        ...this.props,
+        ...getERC721ConstructorProps(this.props),
+      };
       this.fs.copyTpl(
-        this.templatePath(`${NILE}/tests/test_ERC721.py`),
+        this.templatePath(
+          `${NILE}/tests/${
+            this.props.erc721upgradeable
+              ? "test_ERC721_Upgradeable.py"
+              : "test_ERC721.py"
+          }`
+        ),
         this.destinationPath(`${this.props.outputDir}/tests/test_ERC721.py`),
-        this.props
+        this.props,
+        noMarkup
       );
     }
+
     if (this.props.wantERC20 || this.props.wantERC721) {
       this.fs.copyTpl(
         this.templatePath(`${NILE}/.github/workflows/python-app.yml`),
-        this.destinationPath(`${this.props.outputDir}/.github/workflows/python-app.yml`),
+        this.destinationPath(
+          `${this.props.outputDir}/.github/workflows/python-app.yml`
+        ),
         this.props
       );
     }
@@ -166,18 +229,36 @@ module.exports = class extends Generator {
     );
 
     if (this.props.wantERC20) {
+      this.props = {
+        ...this.props,
+        ...getERC20ConstructorProps(this.props),
+      };
       this.fs.copyTpl(
-        this.templatePath(`${HARDHAT}/tests/ERC20.js`),
+        this.templatePath(
+          `${HARDHAT}/tests/${
+            this.props.erc20upgradeable ? "ERC20_Upgradeable.js" : "ERC20.js"
+          }`
+        ),
         this.destinationPath(`${this.props.outputDir}/tests/ERC20.js`),
-        this.props
+        this.props,
+        noMarkup
       );
     }
 
     if (this.props.wantERC721) {
+      this.props = {
+        ...this.props,
+        ...getERC721ConstructorProps(this.props),
+      };
       this.fs.copyTpl(
-        this.templatePath(`${HARDHAT}/tests/ERC721.js`),
+        this.templatePath(
+          `${HARDHAT}/tests/${
+            this.props.erc721upgradeable ? "ERC721_Upgradeable.js" : "ERC721.js"
+          }`
+        ),
         this.destinationPath(`${this.props.outputDir}/tests/ERC721.js`),
-        this.props
+        this.props,
+        noMarkup
       );
     }
   }
@@ -199,22 +280,36 @@ module.exports = class extends Generator {
   }
 
   _copyERC20() {
-    this.fs.copyTpl(
-      this.templatePath("contracts/ERC20.cairo"),
-      this.destinationPath(`${this.props.srcDir}/ERC20.cairo`),
-      this.props
-    );
+    if (this.props.customizeERC20) {
+      this.fs.write(
+        this.destinationPath(`${this.props.srcDir}/ERC20.cairo`),
+        erc20print(this.props)
+      );
+    } else {
+      this.fs.copyTpl(
+        this.templatePath("contracts/ERC20.cairo"),
+        this.destinationPath(`${this.props.srcDir}/ERC20.cairo`),
+        this.props
+      );
+    }
   }
 
   _copyERC721() {
-    this.fs.copyTpl(
-      this.templatePath("contracts/ERC721.cairo"),
-      this.destinationPath(`${this.props.srcDir}/ERC721.cairo`),
-      this.props
-    );
+    if (this.props.customizeERC721) {
+      this.fs.write(
+        this.destinationPath(`${this.props.srcDir}/ERC721.cairo`),
+        erc721print(this.props)
+      );
+    } else {
+      this.fs.copyTpl(
+        this.templatePath("contracts/ERC721.cairo"),
+        this.destinationPath(`${this.props.srcDir}/ERC721.cairo`),
+        this.props
+      );
+    }
   }
 
-  install() { }
+  install() {}
 
   end() {
     this._goodbye();
