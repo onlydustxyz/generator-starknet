@@ -5,18 +5,18 @@ const { starknet } = require("hardhat");
 
 describe("Test contract : ERC20", function () {
 
-        let contractFactory;
-        let contract;
-        this.timeout(300_000);
+      let contractFactory;
+      let contract;
+      this.timeout(300_000);
 
-        before(async () => {
-            contractFactory = await starknet.getContractFactory("ERC20");
-            account = await starknet.deployAccount("OpenZeppelin");
-            owner = account.starknetContract.address;
-            contract = await contractFactory.deploy({
-              recipient: owner,
-              <%= constructorCalldata %>
-        });
+      before(async () => {
+          contractFactory = await starknet.getContractFactory("ERC20");
+          account = await starknet.deployAccount("OpenZeppelin");
+          owner = account.starknetContract.address;
+          contract = await contractFactory.deploy({
+            recipient: owner,
+            <%= constructorCalldata %>
+      });
     });
 
     describe("Testing deploy ERC20", function () {
