@@ -59,6 +59,7 @@ So install yeoman and yeoman-generator and link the current repository as the ye
 ```bash
 npm install -g yo
 npm install -g yeoman-generator
+npm install -g yosay
 npm link
 ```
 Npm link will allow to link a module to a local directory. So whenever you'll run  
