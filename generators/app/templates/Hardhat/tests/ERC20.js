@@ -14,7 +14,7 @@ describe("Test contract : ERC20", function () {
             account = await starknet.deployAccount("OpenZeppelin");
             owner = account.starknetContract.address;
             contract = await contractFactory.deploy({
-              recipient: OWNER,
+              recipient: owner,
               <%= constructorCalldata %>
         });
     });
