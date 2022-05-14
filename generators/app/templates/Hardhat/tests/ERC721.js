@@ -3,7 +3,7 @@ const { starknet } = require("hardhat");
 
 <%= testingVars %>
 
-describe("Test contract : ERC721", function () {
+describe("Testing contract : ERC721", function () {
 
     let contractFactory;
     let contract;
@@ -23,5 +23,6 @@ describe("Test contract : ERC721", function () {
         });
     });
 });
+
 
 

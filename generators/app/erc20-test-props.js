@@ -30,6 +30,7 @@ function getConstructorProps(props) {
     return {
       testingVars: formatLines([
         "const OWNER = 42",
+        'const SPENDER = 9',
         'const NAME = starknet.shortStringToBigInt("Starknet")',
         'const SYMBOL = starknet.shortStringToBigInt("STARK")',
         "const INIT_SUPPLY = { low: 1000, high: 0 }",
@@ -67,9 +68,9 @@ function getConstructorProps(props) {
     return {
       testingVars: needsOwnerVariable(calldata)
         ? formatLines([
-            "OWNER = 42",
-            `NAME = str_to_felt("${props.erc20name}")`,
-          ])
+          "OWNER = 42",
+          `NAME = str_to_felt("${props.erc20name}")`,
+        ])
         : `NAME = str_to_felt("${props.erc20name}")`,
       constructorCalldata: formatArgs(calldata),
     };
@@ -99,9 +100,9 @@ function getConstructorProps(props) {
     return {
       testingVars: needsOwnerVariable(calldata)
         ? formatLines([
-            "const OWNER = 42",
-            `const NAME = starknet.shortStringToBigInt("${props.erc20name}")`,
-          ])
+          "const OWNER = 42",
+          `const NAME = starknet.shortStringToBigInt("${props.erc20name}")`,
+        ])
         : `const NAME = starknet.shortStringToBigInt("${props.erc20name}")`,
       constructorCalldata: formatArgs(calldata),
     };
