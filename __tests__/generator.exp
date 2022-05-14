@@ -13,7 +13,40 @@ send "\r"
 expect "ERC20"
 send "\r"
 
+expect "customize ERC20"
+send "\r"
+
+expect "Name"
+send "\r"
+
+expect "Symbol"
+send "\r"
+
+expect "Decimals"
+send "\r"
+
+expect "Premint"
+send "\r"
+
+expect "Mintable"
+send "\r"
+
+expect "Burnable"
+send "\r"
+
+expect "Pausable"
+send "\r"
+
+expect "Upgradeable"
+send "\r"
+
+expect "License"
+send "\r"
+
 expect "ERC721"
 send "\r"
+
+expect "customize ERC721"
+send -- "n\r"
 
 expect eof
