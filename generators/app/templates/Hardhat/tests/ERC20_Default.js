@@ -1,22 +1,30 @@
 const { expect } = require("chai");
 const { starknet } = require("hardhat");
 
-<%= testingVars %>
+const SPENDER = 9
+const NAME = starknet.shortStringToBigInt("Starknet")
+const SYMBOL = starknet.shortStringToBigInt("STARK")
+const INIT_SUPPLY = { low: 1000n, high: 0n }
+const DECIMALS = 18n
 
 describe("Test contract : ERC20", function () {
 
-      let contractFactory;
-      let contract;
-      this.timeout(300_000);
+    let contractFactory;
+    let contract;
+    let owner;
+    this.timeout(300_000);
 
-      before(async () => {
-          contractFactory = await starknet.getContractFactory("ERC20");
-          account = await starknet.deployAccount("OpenZeppelin");
-          owner = account.starknetContract.address;
-          contract = await contractFactory.deploy({
+    before(async () => {
+        contractFactory = await starknet.getContractFactory("ERC20");
+        account = await starknet.deployAccount("OpenZeppelin");
+        owner = account.starknetContract.address;
+        contract = await contractFactory.deploy({
+            name: NAME,
+            symbol: SYMBOL,
+            decimals: DECIMALS,
+            initial_supply: INIT_SUPPLY,
             recipient: owner,
-            <%= constructorCalldata %>
-      });
+        });
     });
 
     describe("Testing deploy ERC20", function () {
@@ -37,7 +45,7 @@ describe("Test contract : ERC20", function () {
             expect(totalSupply.low).to.equal(INIT_SUPPLY.low);
             expect(totalSupply.high).to.equal(INIT_SUPPLY.high);
         });
-        it("Should make sure the initial supply is correctly transfered to the owner", async function () {
+        it("Should make sure the initial supply is correctly transferred to the owner", async function () {
             const { balance } = await contract.call("balanceOf", { account: owner });
             expect(balance.low).to.equal(INIT_SUPPLY.low);
             expect(balance.high).to.equal(INIT_SUPPLY.high);
@@ -83,7 +91,7 @@ describe("Test contract : ERC20", function () {
         });
     });
     describe("Testing transfer", function () {
-        it("Should mak sure that when trasfering the balance are correctly updated", async function () {
+        it("Should make sure that when transferring the balances are correctly updated", async function () {
             await account.invoke(contract, "approve", { spender: SPENDER, amount: { low: 10n, high: 0 } });
             await account.invoke(contract, "transfer", { recipient: SPENDER, amount: { low: 10n, high: 0 } });
             const { balance: b1 } = await contract.call("balanceOf", { account: owner });
