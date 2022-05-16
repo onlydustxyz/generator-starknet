@@ -2,48 +2,16 @@ const { NILE, HARDHAT } = require("./constants");
 const { formatArgs, formatLines } = require("./utils");
 
 function getConstructorProps(props) {
-  if (props.framework === NILE) {
-    if (!props.customizeERC20) {
-      return nileDefaults();
-    }
+  if (!props.customizeERC20) {
+    return;
+  }
 
+  if (props.framework === NILE) {
     return nileCustomized();
   }
 
   if (props.framework === HARDHAT) {
-    if (!props.customizeERC20) {
-      return hardhatDefaults();
-    }
-
     return hardhatCustomized();
-  }
-
-  function nileDefaults() {
-    // Not needed since default template has no string substitution
-    return {
-      testingVars: "",
-      constructorCalldata: "",
-    };
-  }
-
-  function hardhatDefaults() {
-    return {
-      testingVars: formatLines([
-        "const OWNER = 42",
-        'const SPENDER = 9',
-        'const NAME = starknet.shortStringToBigInt("Starknet")',
-        'const SYMBOL = starknet.shortStringToBigInt("STARK")',
-        "const INIT_SUPPLY = { low: 1000, high: 0 }",
-        "const DECIMALS = 18",
-      ]),
-      constructorCalldata: formatArgs([
-        "name: NAME",
-        "symbol: SYMBOL",
-        "decimals: DECIMALS",
-        "initial_supply: INIT_SUPPLY",
-        "recipient: OWNER",
-      ]),
-    };
   }
 
   function nileCustomized() {
@@ -68,9 +36,9 @@ function getConstructorProps(props) {
     return {
       testingVars: needsOwnerVariable(calldata)
         ? formatLines([
-          "OWNER = 42",
-          `NAME = str_to_felt("${props.erc20name}")`,
-        ])
+            "OWNER = 42",
+            `NAME = str_to_felt("${props.erc20name}")`,
+          ])
         : `NAME = str_to_felt("${props.erc20name}")`,
       constructorCalldata: formatArgs(calldata),
     };
@@ -100,9 +68,9 @@ function getConstructorProps(props) {
     return {
       testingVars: needsOwnerVariable(calldata)
         ? formatLines([
-          "const OWNER = 42",
-          `const NAME = starknet.shortStringToBigInt("${props.erc20name}")`,
-        ])
+            "const OWNER = 42",
+            `const NAME = starknet.shortStringToBigInt("${props.erc20name}")`,
+          ])
         : `const NAME = starknet.shortStringToBigInt("${props.erc20name}")`,
       constructorCalldata: formatArgs(calldata),
     };

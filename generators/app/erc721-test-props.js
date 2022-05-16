@@ -2,46 +2,16 @@ const { NILE, HARDHAT } = require("./constants");
 const { formatArgs, formatLines } = require("./utils");
 
 function getConstructorProps(props) {
-  if (props.framework === NILE) {
-    if (!props.customizeERC721) {
-      return nileDefaults();
-    }
+  if (!props.customizeERC721) {
+    return;
+  }
 
+  if (props.framework === NILE) {
     return nileCustomized(props);
   }
 
   if (props.framework === HARDHAT) {
-    if (!props.customizeERC721) {
-      return hardhatDefaults();
-    }
-
     return hardhatCustomized(props);
-  }
-
-  function nileDefaults() {
-    return {
-      testingVars: formatLines([
-        "OWNER = 42",
-        'NAME = str_to_felt("Starknet NFT")',
-        'SYMBOL = str_to_felt("STARK")',
-      ]),
-      constructorCalldata: "NAME, SYMBOL, OWNER",
-    };
-  }
-
-  function hardhatDefaults() {
-    return {
-      testingVars: formatLines([
-        "const OWNER = 42",
-        'const NAME = starknet.shortStringToBigInt("Starknet NFT")',
-        'const SYMBOL = starknet.shortStringToBigInt("STARK")',
-      ]),
-      constructorCalldata: formatArgs([
-        "name: NAME",
-        "symbol: SYMBOL",
-        "owner: OWNER",
-      ]),
-    };
   }
 
   function nileCustomized(props) {

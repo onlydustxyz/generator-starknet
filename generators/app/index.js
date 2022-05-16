@@ -189,14 +189,13 @@ module.exports = class extends Generator {
         ...this.props,
         ...getERC721ConstructorProps(this.props),
       };
+      const templateFile = this.props.customizeERC721
+        ? this.props.erc721upgradeable
+          ? "test_ERC721_Upgradeable.py"
+          : "test_ERC721_Custom.py"
+        : "test_ERC721_Default.py";
       this.fs.copyTpl(
-        this.templatePath(
-          `${NILE}/tests/${
-            this.props.erc721upgradeable
-              ? "test_ERC721_Upgradeable.py"
-              : "test_ERC721.py"
-          }`
-        ),
+        this.templatePath(`${NILE}/tests/${templateFile}`),
         this.destinationPath(`${this.props.outputDir}/tests/test_ERC721.py`),
         this.props,
         noMarkup
@@ -232,12 +231,13 @@ module.exports = class extends Generator {
         ...this.props,
         ...getERC20ConstructorProps(this.props),
       };
+      const templateFile = this.props.customizeERC20
+        ? this.props.erc20upgradeable
+          ? "ERC20_Upgradeable.js"
+          : "ERC20_Custom.js"
+        : "ERC20_Default.js";
       this.fs.copyTpl(
-        this.templatePath(
-          `${HARDHAT}/tests/${
-            this.props.erc20upgradeable ? "ERC20_Upgradeable.js" : "ERC20.js"
-          }`
-        ),
+        this.templatePath(`${HARDHAT}/tests/${templateFile}`),
         this.destinationPath(`${this.props.outputDir}/tests/ERC20.js`),
         this.props,
         noMarkup
@@ -249,12 +249,13 @@ module.exports = class extends Generator {
         ...this.props,
         ...getERC721ConstructorProps(this.props),
       };
+      const templateFile = this.props.customizeERC721
+        ? this.props.erc721upgradeable
+          ? "ERC721_Upgradeable.js"
+          : "ERC721_Custom.js"
+        : "ERC721_Default.js";
       this.fs.copyTpl(
-        this.templatePath(
-          `${HARDHAT}/tests/${
-            this.props.erc721upgradeable ? "ERC721_Upgradeable.js" : "ERC721.js"
-          }`
-        ),
+        this.templatePath(`${HARDHAT}/tests/${templateFile}`),
         this.destinationPath(`${this.props.outputDir}/tests/ERC721.js`),
         this.props,
         noMarkup
