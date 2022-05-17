@@ -1,0 +1,13 @@
+["protostar.config"]
+protostar_version = "0.1.0"
+
+["protostar.project"]
+libs_path = "./protostar/open_zeppelin"
+
+["protostar.contracts"]
+ERC20 = [
+    "./src/ERC20.cairo"
+]
+ERC721 = [
+    "./src/ERC721.cairo"
+]

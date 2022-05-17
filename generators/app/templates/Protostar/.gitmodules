@@ -1,0 +1,4 @@
+[submodule "open_zeppelin"]
+	url = https://github.com/OpenZeppelin/cairo-contracts
+	path = protostar/open_zeppelin
+	branch = refs/heads/0.1.0
