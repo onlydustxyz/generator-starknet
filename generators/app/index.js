@@ -277,14 +277,8 @@ module.exports = class extends Generator {
 
   _copyProtostarSpecificFiles() {
     this.fs.copyTpl(
-      this.templatePath(`${PROTOSTAR}/.gitmodules`),
-      this.destinationPath(`${this.props.outputDir}/.gitmodules`),
-      this.props
-    );
-
-    this.fs.copyTpl(
       this.templatePath(`${PROTOSTAR}/protostar.toml`),
-      this.destinationPath(`${this.props.outputDir}/protostar.toml`),
+      this.destinationPath(`${this.props.outputDir}/template.protostar.toml`),
       this.props
     );
 
@@ -379,7 +373,7 @@ module.exports = class extends Generator {
     }
   }
 
-  install() { }
+  install() {}
 
   end() {
     this._goodbye();

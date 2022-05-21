@@ -13,6 +13,7 @@ function getConstructorProps(props) {
   if (props.framework === HARDHAT) {
     return hardhatCustomized();
   }
+
   if (props.framework === PROTOSTAR) {
     return protostarCustomized();
   }
@@ -39,9 +40,9 @@ function getConstructorProps(props) {
     return {
       testingVars: needsOwnerVariable(calldata)
         ? formatLines([
-          "OWNER = 42",
-          `NAME = str_to_felt("${props.erc20name}")`,
-        ])
+            "OWNER = 42",
+            `NAME = str_to_felt("${props.erc20name}")`,
+          ])
         : `NAME = str_to_felt("${props.erc20name}")`,
       constructorCalldata: formatArgs(calldata),
     };
@@ -71,9 +72,9 @@ function getConstructorProps(props) {
     return {
       testingVars: needsOwnerVariable(calldata)
         ? formatLines([
-          "const OWNER = 42",
-          `const NAME = starknet.shortStringToBigInt("${props.erc20name}")`,
-        ])
+            "const OWNER = 42",
+            `const NAME = starknet.shortStringToBigInt("${props.erc20name}")`,
+          ])
         : `const NAME = starknet.shortStringToBigInt("${props.erc20name}")`,
       constructorCalldata: formatArgs(calldata),
     };
@@ -102,17 +103,12 @@ function getConstructorProps(props) {
 
     return {
       testingVars: needsOwnerVariable(calldata)
-        ? formatLines([
-          "const OWNER = 42",
-          `const NAME = '${props.erc20name}')`,
-        ])
-        : `const NAME = '${props.erc20name}')`,
+        ? formatLines(["const OWNER = 42", `const NAME = '${props.erc20name}'`])
+        : `const NAME = '${props.erc20name}'`,
       constructorCalldata: formatArgs(calldata),
     };
   }
 }
-
-
 
 function needsOwnerVariable(calldata) {
   return calldata.some((s) => s.includes("OWNER"));
