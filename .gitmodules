@@ -1,8 +1,0 @@
-[submodule "open_zeppelin"]
-	url = https://github.com/OpenZeppelin/cairo-contracts
-	path = lama/protostar/open_zeppelin/open_zeppelin
-	branch = refs/heads/0.1.0
-[submodule "cairo_contracts"]
-	url = https://github.com/OpenZeppelin/cairo-contracts
-	path = lama/protostar/open_zeppelin/src/cairo_contracts
-	branch = refs/heads/0.1.0
