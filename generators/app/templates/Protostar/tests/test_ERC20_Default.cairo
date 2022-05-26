@@ -99,7 +99,7 @@ end
 func test_approve{syscall_ptr : felt*, range_check_ptr, pedersen_ptr : HashBuiltin*}():
     alloc_locals
     let (contract_address) = get_deployed_contract_address()
-    %{ start_prank(ids.OWNER) %}
+    %{ stop_prank_callable = start_prank(caller_address=ids.OWNER, target_contract_address=ids.contract_address) %}
     let (remaining) = StorageContract.allowance(contract_address, OWNER, SPENDER)
     assert remaining.low = 0
     assert remaining.high = 0
@@ -108,7 +108,7 @@ func test_approve{syscall_ptr : felt*, range_check_ptr, pedersen_ptr : HashBuilt
     let (remaining1) = StorageContract.allowance(contract_address, OWNER, SPENDER)
     assert remaining1.low = 10
     assert remaining1.high = 11
-    %{ stop_prank() %}
+    %{ stop_prank_callable() %}
     return ()
 end
 
@@ -116,12 +116,12 @@ end
 func test_approve_error_zero_address_spender{
     syscall_ptr : felt*, range_check_ptr, pedersen_ptr : HashBuiltin*
 }():
-    %{ start_prank(ids.OWNER) %}
     let (contract_address) = get_deployed_contract_address()
+    %{ stop_prank_callable = start_prank(caller_address=ids.OWNER, target_contract_address=ids.contract_address) %}
     let amount_to_approve = Uint256(10, 11)
     %{ expect_revert(error_message="ERC20: cannot approve to the zero address") %}
     let (remaining) = StorageContract.approve(contract_address, 0, amount_to_approve)
-    %{ stop_prank() %}
+    %{ stop_prank_callable() %}
     return ()
 end
 
@@ -129,30 +129,30 @@ end
 func test_approve_error_zero_address_owner{
     syscall_ptr : felt*, range_check_ptr, pedersen_ptr : HashBuiltin*
 }():
-    %{ start_prank(0) %}
     let (contract_address) = get_deployed_contract_address()
+    %{ stop_prank_callable = start_prank(caller_address=0, target_contract_address=ids.contract_address) %}
     let amount_to_approve = Uint256(10, 11)
-    %{ expect_revert(error_message="ERC20: cannot approve to the zero address") %}
+    %{ expect_revert(error_message="ERC20: zero address cannot approve") %}
     let (remaining) = StorageContract.approve(contract_address, 0, amount_to_approve)
-    %{ stop_prank() %}
+    %{ stop_prank_callable() %}
     return ()
 end
 
 @external
 func test_approve_event{syscall_ptr : felt*, range_check_ptr, pedersen_ptr : HashBuiltin*}():
-    %{ start_prank(ids.OWNER) %}
     let (contract_address) = get_deployed_contract_address()
+    %{ stop_prank_callable = start_prank(caller_address=ids.OWNER, target_contract_address=ids.contract_address) %}
     let amount_to_approve = Uint256(10, 11)
-    %{ expect_events({"name": "Approval", "data": [ids.OWNER, ids.SPENDER, (ids.INIT_SUPPLY_LOW, ids.INIT_SUPPLY_HIGH)]}) %}
+    %{ expect_events({"name": "Approval", "data": [ids.OWNER, 12, 10, 11]}) %}
     let (remaining) = StorageContract.approve(contract_address, 12, amount_to_approve)
-    %{ stop_prank() %}
+    %{ stop_prank_callable() %}
     return ()
 end
 
 @external
 func test_transfer{syscall_ptr : felt*, range_check_ptr, pedersen_ptr : HashBuiltin*}():
-    %{ start_prank(ids.OWNER) %}
     let (contract_address) = get_deployed_contract_address()
+    %{ stop_prank_callable = start_prank(caller_address=ids.OWNER, target_contract_address=ids.contract_address) %}
     let amount_to_transfer = Uint256(10, 0)
     StorageContract.approve(contract_address, SPENDER, amount_to_transfer)
     StorageContract.transfer(contract_address, SPENDER, amount_to_transfer)
@@ -165,3 +165,4 @@ func test_transfer{syscall_ptr : felt*, range_check_ptr, pedersen_ptr : HashBuil
     %{ stop_prank_callable() %}
     return ()
 end
+
