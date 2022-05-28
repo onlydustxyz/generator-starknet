@@ -31,7 +31,7 @@ module.exports = class extends Generator {
     await this._greetings();
     this.cwd = cwd();
     this.dirName = this.cwd.substring(this.cwd.lastIndexOf("/") + 1);
-    this.supportedFrameworks = [NILE, HARDHAT];
+    this.supportedFrameworks = [NILE, HARDHAT, PROTOSTAR];
   }
 
   // Prompt user for configuration choices
@@ -135,6 +135,10 @@ module.exports = class extends Generator {
 
     if (this.props.framework === HARDHAT) {
       this._copyHardhatSpecificFiles();
+    }
+
+    if (this.props.framework === PROTOSTAR) {
+      this._copyProtostarSpecificFiles();
     }
 
     this._copyReadme();
@@ -257,6 +261,58 @@ module.exports = class extends Generator {
       this.fs.copyTpl(
         this.templatePath(`${HARDHAT}/tests/${templateFile}`),
         this.destinationPath(`${this.props.outputDir}/tests/ERC721.js`),
+        this.props,
+        noMarkup
+      );
+    }
+
+    if (this.props.erc20upgradeable || this.props.erc721upgradeable) {
+      this.fs.copyTpl(
+        this.templatePath("contracts/Proxy.cairo"),
+        this.destinationPath(`${this.props.srcDir}/Proxy.cairo`),
+        this.props
+      );
+    }
+  }
+
+  _copyProtostarSpecificFiles() {
+    this.fs.copyTpl(
+      this.templatePath(`${PROTOSTAR}/protostar.toml`),
+      this.destinationPath(`${this.props.outputDir}/template.protostar.toml`),
+      this.props
+    );
+
+    if (this.props.wantERC20) {
+      this.props = {
+        ...this.props,
+        ...getERC20ConstructorProps(this.props),
+      };
+      const templateFile = this.props.customizeERC20
+        ? this.props.erc20upgradeable
+          ? "test_ERC20_Upgradeable.cairo"
+          : "test_ERC20_Custom.cairo"
+        : "test_ERC20_Default.cairo";
+      this.fs.copyTpl(
+        this.templatePath(`${PROTOSTAR}/tests/${templateFile}`),
+        this.destinationPath(`${this.props.outputDir}/tests/test_ERC20.cairo`),
+        this.props,
+        noMarkup
+      );
+    }
+
+    if (this.props.wantERC721) {
+      this.props = {
+        ...this.props,
+        ...getERC721ConstructorProps(this.props),
+      };
+      const templateFile = this.props.customizeERC721
+        ? this.props.erc721upgradeable
+          ? "test_ERC721_Upgradeable.cairo"
+          : "test_ERC721_Custom.cairo"
+        : "test_ERC721_Default.cairo";
+      this.fs.copyTpl(
+        this.templatePath(`${PROTOSTAR}/tests/${templateFile}`),
+        this.destinationPath(`${this.props.outputDir}/tests/test_ERC721.cairo`),
         this.props,
         noMarkup
       );
