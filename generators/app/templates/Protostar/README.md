@@ -29,6 +29,7 @@ If it crashes when executing the command to install the library OpenZeppelin mak
 
 ### ⛏️ Compile
 
+By default, the [config file](./protostar.toml) is configured to take both an ERC20 and an ERC721 contract. If you didn't take any of those two you should first update that config file before running this command.
 ```bash
 protostar build
 ```
