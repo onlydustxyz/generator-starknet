@@ -1,7 +1,6 @@
-const {
-  printERC721,
-  erc721defaults: defaults,
-} = require("@openzeppelin/wizard-cairo");
+const { erc721 } = require("@openzeppelin/wizard-cairo");
+
+const { print, defaults } = erc721;
 
 const erc721prompts = [
   {
@@ -49,7 +48,7 @@ const erc721prompts = [
 ];
 
 function erc721print(props) {
-  return printERC721({
+  return print({
     name: props.erc721name,
     symbol: props.erc721symbol,
     mintable: props.erc721mintable,

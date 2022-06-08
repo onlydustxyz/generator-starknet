@@ -1,5 +1,6 @@
 const { NILE, HARDHAT, PROTOSTAR } = require("./constants");
 const { formatArgs, formatLines } = require("./utils");
+const { erc20 } = require("@openzeppelin/wizard-cairo");
 
 function getConstructorProps(props) {
   if (!props.customizeERC20) {
@@ -37,14 +38,26 @@ function getConstructorProps(props) {
       calldata.push("admin.contract_address"); // Proxy admin
     }
 
+    const vars = [];
+    if (needsOwnerVariable(calldata)) {
+      vars.push("OWNER = 42");
+    }
+
+    vars.push("SPENDER = 9");
+    vars.push(`NAME = str_to_felt("${props.erc20name}")`);
+    vars.push(`SYMBOL = str_to_felt("${props.erc20symbol}")`);
+    vars.push(
+      `INIT_SUPPLY = to_uint(${erc20.getInitialSupply(
+        props.erc20premint,
+        props.erc20decimals
+      )})`
+    );
+    vars.push(`DECIMALS = ${props.erc20decimals}`);
+
     return {
-      testingVars: needsOwnerVariable(calldata)
-        ? formatLines([
-            "OWNER = 42",
-            `NAME = str_to_felt("${props.erc20name}")`,
-          ])
-        : `NAME = str_to_felt("${props.erc20name}")`,
+      testingVars: formatLines(vars),
       constructorCalldata: formatArgs(calldata),
+      hasOwner: needsOwnerVariable(calldata),
     };
   }
 
