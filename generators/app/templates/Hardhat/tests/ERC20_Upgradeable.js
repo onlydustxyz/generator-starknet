@@ -12,8 +12,8 @@ describe("Test contract : ERC20", function () {
 
     before(async () => {
         account = await starknet.deployAccount("OpenZeppelin");
-        const accountAddress = account.starknetContract.address;
-        console.log(`Deployed account ${accountAddress}`);
+        const owner = account.starknetContract.address;
+        console.log(`Deployed account ${owner}`);
         
         const implFactory = await starknet.getContractFactory("ERC20");
         const impl = await implFactory.deploy();

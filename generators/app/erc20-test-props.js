@@ -1,6 +1,6 @@
 const { NILE, HARDHAT, PROTOSTAR } = require("./constants");
 const { formatArgs, formatLines } = require("./utils");
-const { erc20 } = require("@openzeppelin/wizard-cairo");
+const { erc20, utils } = require("@openzeppelin/wizard-cairo");
 
 function getConstructorProps(props) {
   if (!props.customizeERC20) {
@@ -39,7 +39,7 @@ function getConstructorProps(props) {
     }
 
     const vars = [];
-    if (needsOwnerVariable(calldata)) {
+    if (needsVariable(calldata, "OWNER")) {
       vars.push("OWNER = 42");
     }
 
@@ -57,7 +57,7 @@ function getConstructorProps(props) {
     return {
       testingVars: formatLines(vars),
       constructorCalldata: formatArgs(calldata),
-      hasOwner: needsOwnerVariable(calldata),
+      hasOwner: needsVariable(calldata, "OWNER"),
     };
   }
 
@@ -65,31 +65,39 @@ function getConstructorProps(props) {
     const calldata = [];
 
     if (props.erc20premint && props.erc20premint !== "0") {
-      calldata.push(
-        props.erc20upgradeable
-          ? "recipient: accountAddress"
-          : "recipient: OWNER"
-      );
+      calldata.push("recipient: owner");
     }
 
     if (props.erc20mintable || props.erc20pausable) {
-      calldata.push(
-        props.erc20upgradeable ? "owner: accountAddress" : "owner: OWNER"
-      );
+      calldata.push("owner: owner");
     }
 
     if (props.erc20upgradeable) {
-      calldata.push("proxy_admin: accountAddress");
+      calldata.push("proxy_admin: owner");
     }
 
+    const initialSupply = erc20.getInitialSupply(
+      props.erc20premint,
+      props.erc20decimals
+    );
+    const initialSupplyUint256 = utils.toUint256(initialSupply);
+    const vars = [];
+    vars.push(`const SPENDER = 9`);
+    vars.push(
+      `const NAME = starknet.shortStringToBigInt("${props.erc20name}")`
+    );
+    vars.push(
+      `const SYMBOL = starknet.shortStringToBigInt("${props.erc20symbol}")`
+    );
+    vars.push(
+      `const INIT_SUPPLY = { low: ${initialSupplyUint256.lowBits}n, high: ${initialSupplyUint256.highBits}n }`
+    );
+    vars.push(`const DECIMALS = ${props.erc20decimals}n`);
+
     return {
-      testingVars: needsOwnerVariable(calldata)
-        ? formatLines([
-            "const OWNER = 42",
-            `const NAME = starknet.shortStringToBigInt("${props.erc20name}")`,
-          ])
-        : `const NAME = starknet.shortStringToBigInt("${props.erc20name}")`,
+      testingVars: formatLines(vars),
       constructorCalldata: formatArgs(calldata),
+      hasOwner: needsVariable(calldata, "owner"),
     };
   }
 
@@ -115,7 +123,7 @@ function getConstructorProps(props) {
     }
 
     return {
-      testingVars: needsOwnerVariable(calldata)
+      testingVars: needsVariable(calldata, "OWNER")
         ? formatLines(["const OWNER = 42", `const NAME = '${props.erc20name}'`])
         : `const NAME = '${props.erc20name}'`,
       constructorCalldata: formatArgs(calldata),
@@ -123,8 +131,8 @@ function getConstructorProps(props) {
   }
 }
 
-function needsOwnerVariable(calldata) {
-  return calldata.some((s) => s.includes("OWNER"));
+function needsVariable(calldata, variable) {
+  return calldata.some((s) => s.includes(variable));
 }
 
 module.exports = { getERC20ConstructorProps: getConstructorProps };
