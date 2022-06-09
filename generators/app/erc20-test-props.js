@@ -43,21 +43,21 @@ function getConstructorProps(props) {
       vars.push("OWNER = 42");
     }
 
+    const initialSupply = erc20.getInitialSupply(
+      props.erc20premint,
+      props.erc20decimals
+    );
     vars.push("SPENDER = 9");
     vars.push(`NAME = str_to_felt("${props.erc20name}")`);
     vars.push(`SYMBOL = str_to_felt("${props.erc20symbol}")`);
-    vars.push(
-      `INIT_SUPPLY = to_uint(${erc20.getInitialSupply(
-        props.erc20premint,
-        props.erc20decimals
-      )})`
-    );
+    vars.push(`INIT_SUPPLY = to_uint(${initialSupply})`);
     vars.push(`DECIMALS = ${props.erc20decimals}`);
 
     return {
       testingVars: formatLines(vars),
       constructorCalldata: formatArgs(calldata),
       hasOwner: needsVariable(calldata, "OWNER"),
+      erc20InitialSupply: initialSupply,
     };
   }
 
@@ -98,6 +98,7 @@ function getConstructorProps(props) {
       testingVars: formatLines(vars),
       constructorCalldata: formatArgs(calldata),
       hasOwner: needsVariable(calldata, "owner"),
+      erc20InitialSupply: initialSupply,
     };
   }
 

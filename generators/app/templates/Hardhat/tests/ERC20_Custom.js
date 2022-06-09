@@ -94,7 +94,7 @@ describe("Test contract : ERC20", function () {
             await account.invoke(contract, "approve", { spender: SPENDER, amount: { low: 10n, high: 0 } });
             await account.invoke(contract, "transfer", { recipient: SPENDER, amount: { low: 10n, high: 0 } });
             const { balance: b1 } = await contract.call("balanceOf", { account: owner });
-            expect(b1.low).to.equal(990n);
+            expect(b1.low).to.equal(<%= erc20InitialSupply %>n-10n);
             expect(b1.high).to.equal(0n);
             const { balance: b2 } = await contract.call("balanceOf", { account: SPENDER });
             expect(b2.low).to.equal(10n);
