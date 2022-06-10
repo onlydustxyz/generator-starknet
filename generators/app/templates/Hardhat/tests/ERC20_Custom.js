@@ -88,7 +88,7 @@ describe("Test contract : ERC20", function () {
         });
         <% } %>
     });
-    <% if (hasOwner) { %>
+    <% if (hasOwner && erc20InitialSupply >= 10) { %>
     describe("Testing transfer", function () {
         it("Should make sure that when transferring the balances are correctly updated", async function () {
             await account.invoke(contract, "approve", { spender: SPENDER, amount: { low: 10n, high: 0 } });

@@ -147,6 +147,7 @@ func test_approve_event{syscall_ptr : felt*, range_check_ptr, pedersen_ptr : Has
     return ()
 end
 
+<% if (erc20InitialSupplyLowBits >= 10) { %>
 @external
 func test_transfer{syscall_ptr : felt*, range_check_ptr, pedersen_ptr : HashBuiltin*}():
     let (contract_address) = get_deployed_contract_address()
@@ -163,4 +164,5 @@ func test_transfer{syscall_ptr : felt*, range_check_ptr, pedersen_ptr : HashBuil
     %{ stop_prank_callable() %}
     return ()
 end
+<% } %>
 <% } %>

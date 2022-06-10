@@ -90,11 +90,13 @@ async def test_approve_event(erc20_factory):
     execution_info = await erc20_factory.approve(spender=SPENDER, amount=(10,11)).invoke(caller_address=OWNER)
     assert_event_emitted(execution_info, erc20_factory.contract_address, "Approval", [OWNER, SPENDER, 10,11])
 
+<% if (erc20InitialSupply >= 10) { %>
 @pytest.mark.asyncio
 async def test_transfer(erc20_factory):
     execution_info = await erc20_factory.transfer(recipient=SPENDER, amount=(10,0)).invoke(caller_address=OWNER)
     await assert_balanceOf(erc20_factory, OWNER, (<%= erc20InitialSupply %>-10,0))
     await assert_balanceOf(erc20_factory, SPENDER, (10,0))
+<% } %>
 <% } %>
 
 async def assert_balanceOf(erc20_factory, account, balance):
