@@ -106,28 +106,40 @@ function getConstructorProps(props) {
     const calldata = [];
 
     if (props.erc20premint && props.erc20premint !== "0") {
-      calldata.push(
-        props.erc20upgradeable
-          ? "recipient: accountAddress"
-          : "recipient: OWNER"
-      );
+      calldata.push("ids.OWNER"); // Recipient
     }
 
     if (props.erc20mintable || props.erc20pausable) {
-      calldata.push(
-        props.erc20upgradeable ? "owner: accountAddress" : "owner: OWNER"
-      );
+      calldata.push("ids.OWNER"); // Owner
     }
 
     if (props.erc20upgradeable) {
-      calldata.push("proxy_admin: accountAddress");
+      calldata.push("ids.OWNER"); // Proxy admin
     }
 
+    const initialSupply = erc20.getInitialSupply(
+      props.erc20premint,
+      props.erc20decimals
+    );
+    const initialSupplyUint256 = utils.toUint256(initialSupply);
+    const vars = [];
+    if (needsVariable(calldata, "OWNER")) {
+      vars.push("const OWNER = 42");
+    }
+
+    vars.push(`const SPENDER = 9`);
+    vars.push(`const NAME = '${props.erc20name}'`);
+    vars.push(`const SYMBOL = '${props.erc20symbol}'`);
+    vars.push(`const INIT_SUPPLY_LOW = ${initialSupplyUint256.lowBits}`);
+    vars.push(`const INIT_SUPPLY_HIGH = ${initialSupplyUint256.highBits}`);
+    vars.push(`const DECIMALS = ${props.erc20decimals}`);
+
     return {
-      testingVars: needsVariable(calldata, "OWNER")
-        ? formatLines(["const OWNER = 42", `const NAME = '${props.erc20name}'`])
-        : `const NAME = '${props.erc20name}'`,
+      testingVars: formatLines(vars),
       constructorCalldata: formatArgs(calldata),
+      hasOwner: needsVariable(calldata, "OWNER"),
+      erc20InitialSupplyLowBits: initialSupplyUint256.lowBits,
+      erc20InitialSupplyHighBits: initialSupplyUint256.highBits,
     };
   }
 }
