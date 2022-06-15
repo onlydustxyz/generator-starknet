@@ -1,7 +1,6 @@
-const {
-  printERC20,
-  erc20defaults: defaults,
-} = require("@openzeppelin/wizard-cairo");
+const { erc20 } = require("@openzeppelin/wizard-cairo");
+
+const { print, defaults } = erc20;
 
 const erc20prompts = [
   {
@@ -61,7 +60,7 @@ const erc20prompts = [
 ];
 
 function erc20print(props) {
-  return printERC20({
+  return print({
     name: props.erc20name,
     symbol: props.erc20symbol,
     decimals: props.erc20decimals,
