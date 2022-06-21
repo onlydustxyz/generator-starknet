@@ -39,15 +39,15 @@ async def erc721_init(contract_defs):
     account_def, erc721_def, proxy_def = contract_defs
     starknet = await Starknet.empty()
     account = await starknet.deploy(
-        contract_def=account_def,
+        source='src/account/Account.cairo',
         constructor_calldata=[signer.public_key]
     )
     erc721 = await starknet.deploy(
-        contract_def=erc721_def,
+        source='src/ERC721.cairo',
         constructor_calldata=[]
     )
     proxy = await starknet.deploy(
-        contract_def=proxy_def,
+        source='src/upgrades/Proxy.cairo',
         constructor_calldata=[erc721.contract_address]
     )
     return (
