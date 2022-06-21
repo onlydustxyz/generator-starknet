@@ -32,7 +32,7 @@ jobs:
         pip3 install ecdsa==0.17.0 fastecdsa==2.2.3 sympy==1.10.1
         sudo apt install -y libgmp3-dev
         pip3 install openzeppelin-cairo-contracts==0.1.0
-        pip3 install cairo-lang==0.8.2
+        pip3 install cairo-lang==0.9.0
     - name: Test with pytest
       run: |
         pytest
