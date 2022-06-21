@@ -77,6 +77,7 @@ module.exports = class extends Generator {
         type: "confirm",
         name: "wantCI",
         message: "Do you want to add a CI/CD pipeline?",
+        default: true,
         store: true,
       }
     ];
@@ -212,7 +213,7 @@ module.exports = class extends Generator {
       );
     }
 
-    if (this.props.wantERC20 || this.props.wantERC721) {
+    if (this.props.wantCI) {
       this.fs.copyTpl(
         this.templatePath(`${NILE}/.github/workflows/python-app.yml`),
         this.destinationPath(
