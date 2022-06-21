@@ -73,6 +73,12 @@ module.exports = class extends Generator {
         message: "Do you want to add an ERC20 token contract?",
         store: true,
       },
+      {
+        type: "confirm",
+        name: "wantCI",
+        message: "Do you want to add a CI/CD pipeline?",
+        store: true,
+      }
     ];
     await this._processPrompts(prompts);
 
