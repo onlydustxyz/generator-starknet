@@ -18,7 +18,7 @@ async def erc20_init(contract_defs):
     erc20_def = contract_defs
     starknet = await Starknet.empty()
     erc20 = await starknet.deploy(
-        contract_def=erc20_def,
+        source='src/ERC20.cairo',
         constructor_calldata=[<%= constructorCalldata %>]
     )
     return (

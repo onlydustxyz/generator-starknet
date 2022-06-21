@@ -39,15 +39,15 @@ async def erc20_init(contract_defs):
     account_def, erc20_def, proxy_def = contract_defs
     starknet = await Starknet.empty()
     account = await starknet.deploy(
-        contract_def=account_def,
+        source='src/account/Account.cairo',
         constructor_calldata=[signer.public_key]
     )
     erc20 = await starknet.deploy(
-        contract_def=erc20_def,
+        source='src/ERC20.cairo',
         constructor_calldata=[]
     )
     proxy = await starknet.deploy(
-        contract_def=proxy_def,
+        source='src/upgrades/Proxy.cairo',
         constructor_calldata=[erc20.contract_address]
     )
     return (
