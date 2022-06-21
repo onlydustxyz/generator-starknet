@@ -18,7 +18,7 @@ async def erc721_init(contract_defs):
     erc721_def = contract_defs
     starknet = await Starknet.empty()
     erc721 = await starknet.deploy(
-        contract_def=erc721_def,
+        source='src/ERC721.cairo',
         constructor_calldata=[<%= constructorCalldata %>]
     )
     return (
