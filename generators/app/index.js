@@ -72,13 +72,6 @@ module.exports = class extends Generator {
         message: "Do you want to add an ERC20 token contract?",
         store: true,
       },
-      {
-        type: "confirm",
-        name: "wantCI",
-        message: "Do you want to add a CI/CD pipeline?",
-        default: true,
-        store: true,
-      },
     ];
     await this._processPrompts(prompts);
 
@@ -112,6 +105,14 @@ module.exports = class extends Generator {
         await this._processPrompts(erc721prompts);
       }
     }
+
+    await this._processPrompts({
+      type: "confirm",
+      name: "wantCI",
+      message: "Do you want to add a CI/CD pipeline?",
+      default: true,
+      store: true,
+    });
 
     if (includeAutoInstallPrompt) {
       await this._processPrompts(autoInstallPrompt);
