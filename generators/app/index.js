@@ -25,7 +25,6 @@ const noMarkup = {
     return markup;
   },
 };
-
 module.exports = class extends Generator {
   async initializing() {
     await this._greetings();
@@ -294,7 +293,6 @@ module.exports = class extends Generator {
       this.destinationPath(`${this.props.outputDir}/protostar`),
       this.props
     );
-
     if (this.props.wantERC20) {
       this.props = {
         ...this.props,
