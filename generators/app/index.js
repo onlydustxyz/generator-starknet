@@ -285,9 +285,27 @@ module.exports = class extends Generator {
   _copyProtostarSpecificFiles() {
     this.fs.copyTpl(
       this.templatePath(`${PROTOSTAR}/protostar.toml`),
-      this.destinationPath(`${this.props.outputDir}/template.protostar.toml`),
+      this.destinationPath(`${this.props.outputDir}/protostar.toml`),
       this.props
     );
+  
+    
+    const files = fs.readdirSync(this.templatePath(`${PROTOSTAR}/protostar`));
+    files.forEach(file => {
+      this.fs.copyTpl(
+        this.templatePath(`${PROTOSTAR}/protostar/${file}`),
+        this.destinationPath(`${this.props.outputDir}/protostar/${file}`),
+        this.props
+      );
+    });
+    
+  
+    this.fs.copyTpl(
+      this.templatePath(`${PROTOSTAR}/protostar/`),
+      this.destinationPath(`${this.props.outputDir}`),
+      this.props
+    );
+
 
     if (this.props.wantERC20) {
       this.props = {
