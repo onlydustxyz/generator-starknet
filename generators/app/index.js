@@ -107,6 +107,16 @@ module.exports = class extends Generator {
       }
     }
 
+    if ([NILE, PROTOSTAR].includes(this.props.framework)) {
+      await this._processPrompts({
+        type: "confirm",
+        name: "libraryMode",
+        message: "Do you want the generated project to be a library?",
+        default: false,
+        store: true,
+      });
+    }
+
     if (includeAutoInstallPrompt) {
       await this._processPrompts(autoInstallPrompt);
     }
@@ -151,6 +161,10 @@ module.exports = class extends Generator {
 
     if (this.props.wantERC721) {
       this._copyERC721();
+    }
+
+    if (this.props.libraryMode) {
+      this._copyLibraryModeSpecificFiles();
     }
   }
 
@@ -325,6 +339,10 @@ module.exports = class extends Generator {
         this.props
       );
     }
+  }
+
+  _copyLibraryModeSpecificFiles() {
+    throw Error("Library mode not implemented");
   }
 
   _copyReadme() {
