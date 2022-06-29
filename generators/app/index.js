@@ -162,10 +162,6 @@ module.exports = class extends Generator {
     if (this.props.wantERC721) {
       this._copyERC721();
     }
-
-    if (this.props.libraryMode) {
-      this._copyLibraryModeSpecificFiles();
-    }
   }
 
   _copyNileSpecificFiles() {
@@ -228,6 +224,28 @@ module.exports = class extends Generator {
         ),
         this.props
       );
+    }
+
+    if (this.props.libraryMode) {
+      this.fs.copyTpl(
+        this.templatePath(`${NILE}/setup.py`),
+        this.destinationPath(`${this.props.outputDir}/setup.py`),
+        this.props
+      );
+
+      this.fs.copyTpl(
+        this.templatePath(`${NILE}/setup.cfg`),
+        this.destinationPath(`${this.props.outputDir}/setup.cfg`),
+        this.props
+      );
+
+      if (!this.props.wantERC20 || !this.props.wantERC721) {
+        this.fs.copyTpl(
+          this.templatePath(`${NILE}/.gitkeep`),
+          this.destinationPath(`${this.props.srcDir}/.gitkeep`),
+          this.props
+        );
+      }
     }
   }
 
@@ -339,10 +357,6 @@ module.exports = class extends Generator {
         this.props
       );
     }
-  }
-
-  _copyLibraryModeSpecificFiles() {
-    throw Error("Library mode not implemented");
   }
 
   _copyReadme() {
