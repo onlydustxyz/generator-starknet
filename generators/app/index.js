@@ -227,25 +227,7 @@ module.exports = class extends Generator {
     }
 
     if (this.props.libraryMode) {
-      this.fs.copyTpl(
-        this.templatePath(`${NILE}/setup.py`),
-        this.destinationPath(`${this.props.outputDir}/setup.py`),
-        this.props
-      );
-
-      this.fs.copyTpl(
-        this.templatePath(`${NILE}/setup.cfg`),
-        this.destinationPath(`${this.props.outputDir}/setup.cfg`),
-        this.props
-      );
-
-      if (!this.props.wantERC20 || !this.props.wantERC721) {
-        this.fs.copyTpl(
-          this.templatePath(`${NILE}/.gitkeep`),
-          this.destinationPath(`${this.props.srcDir}/.gitkeep`),
-          this.props
-        );
-      }
+      this._copyLibraryModeSpecificFiles();
     }
   }
 
@@ -357,6 +339,10 @@ module.exports = class extends Generator {
         this.props
       );
     }
+
+    if (this.props.libraryMode) {
+      this._copyLibraryModeSpecificFiles();
+    }
   }
 
   _copyReadme() {
@@ -400,6 +386,28 @@ module.exports = class extends Generator {
       this.fs.copyTpl(
         this.templatePath("contracts/ERC721.cairo"),
         this.destinationPath(`${this.props.srcDir}/ERC721.cairo`),
+        this.props
+      );
+    }
+  }
+
+  _copyLibraryModeSpecificFiles() {
+    this.fs.copyTpl(
+      this.templatePath("library/setup.py"),
+      this.destinationPath(`${this.props.outputDir}/setup.py`),
+      this.props
+    );
+
+    this.fs.copyTpl(
+      this.templatePath("library/setup.cfg"),
+      this.destinationPath(`${this.props.outputDir}/setup.cfg`),
+      this.props
+    );
+
+    if (!this.props.wantERC20 || !this.props.wantERC721) {
+      this.fs.copyTpl(
+        this.templatePath("library/.gitkeep"),
+        this.destinationPath(`${this.props.srcDir}/.gitkeep`),
         this.props
       );
     }
