@@ -8,9 +8,7 @@
     "email": "abdelhamid.bakhta@gmail.com",
     "url": "https://twitter.com/dimahledba"
   },
-  "files": [
-    "generators"
-  ],
+  "files": ["generators"],
   "main": "generators/index.js",
   "keywords": [
     "yeoman-generator",
@@ -38,25 +36,22 @@
     "npm": ">= 4.0.0"
   },
   "dependencies": {
+    "@openzeppelin/wizard-cairo": "^0.2.0",
+    "chalk": "^2.1.0",
     "ejs": ">=3.1.7",
     "glob-parent": ">=5.1.2",
-    "chalk": "^2.1.0",
     "yeoman-generator": "^3.1.1",
-    "yosay": "^2.0.2",
-    "@openzeppelin/wizard-cairo": "^0.2.0"
+    "yosay": "^2.0.2"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "collectCoverageFrom": ["<rootDir>/generators/**"],
+    "coveragePathIgnorePatterns": ["<rootDir>/generators/app/templates"]
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.json": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.js": ["eslint --fix", "git add"],
+    "*.json": ["prettier --write", "git add"]
   },
   "husky": {
     "hooks": {
@@ -64,10 +59,7 @@
     }
   },
   "eslintConfig": {
-    "extends": [
-      "xo",
-      "prettier"
-    ],
+    "extends": ["xo", "prettier"],
     "env": {
       "jest": true,
       "node": true
@@ -75,9 +67,7 @@
     "rules": {
       "prettier/prettier": "error"
     },
-    "plugins": [
-      "prettier"
-    ]
+    "plugins": ["prettier"]
   },
   "scripts": {
     "pretest": "eslint .",
