@@ -404,7 +404,7 @@ module.exports = class extends Generator {
       this.props
     );
 
-    if (!this.props.wantERC20 || !this.props.wantERC721) {
+    if (!this.props.wantERC20 && !this.props.wantERC721) {
       this.fs.copyTpl(
         this.templatePath("library/.gitkeep"),
         this.destinationPath(`${this.props.srcDir}/.gitkeep`),
