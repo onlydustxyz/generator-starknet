@@ -25,7 +25,6 @@ const noMarkup = {
     return markup;
   },
 };
-
 module.exports = class extends Generator {
   async initializing() {
     await this._greetings();
@@ -73,13 +72,6 @@ module.exports = class extends Generator {
         message: "Do you want to add an ERC20 token contract?",
         store: true,
       },
-      {
-        type: "confirm",
-        name: "wantCI",
-        message: "Do you want to add a CI/CD pipeline?",
-        default: true,
-        store: true,
-      }
     ];
     await this._processPrompts(prompts);
 
@@ -113,6 +105,14 @@ module.exports = class extends Generator {
         await this._processPrompts(erc721prompts);
       }
     }
+
+    await this._processPrompts({
+      type: "confirm",
+      name: "wantCI",
+      message: "Do you want to add a CI/CD pipeline?",
+      default: true,
+      store: true,
+    });
 
     if (includeAutoInstallPrompt) {
       await this._processPrompts(autoInstallPrompt);
@@ -285,10 +285,15 @@ module.exports = class extends Generator {
   _copyProtostarSpecificFiles() {
     this.fs.copyTpl(
       this.templatePath(`${PROTOSTAR}/protostar.toml`),
-      this.destinationPath(`${this.props.outputDir}/template.protostar.toml`),
+      this.destinationPath(`${this.props.outputDir}/protostar.toml`),
       this.props
     );
 
+    this.fs.copyTpl(
+      this.templatePath(`${PROTOSTAR}/protostar/`),
+      this.destinationPath(`${this.props.outputDir}/protostar`),
+      this.props
+    );
     if (this.props.wantERC20) {
       this.props = {
         ...this.props,
