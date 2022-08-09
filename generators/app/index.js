@@ -79,7 +79,7 @@ module.exports = class extends Generator {
         message: "Do you want to add a CI/CD pipeline?",
         default: true,
         store: true,
-      }
+      },
     ];
     await this._processPrompts(prompts);
 
@@ -253,6 +253,12 @@ module.exports = class extends Generator {
         this.props,
         noMarkup
       );
+      this.fs.copyTpl(
+        this.templatePath(`${HARDHAT}/scripts/${templateFile}`),
+        this.destinationPath(`${this.props.outputDir}/scripts/ERC20.js`),
+        this.props,
+        noMarkup
+      );
     }
 
     if (this.props.wantERC721) {
@@ -268,6 +274,12 @@ module.exports = class extends Generator {
       this.fs.copyTpl(
         this.templatePath(`${HARDHAT}/tests/${templateFile}`),
         this.destinationPath(`${this.props.outputDir}/tests/ERC721.js`),
+        this.props,
+        noMarkup
+      );
+      this.fs.copyTpl(
+        this.templatePath(`${HARDHAT}/scripts/${templateFile}`),
+        this.destinationPath(`${this.props.outputDir}/scripts/ERC721.js`),
         this.props,
         noMarkup
       );
