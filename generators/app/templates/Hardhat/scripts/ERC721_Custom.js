@@ -3,10 +3,7 @@ const hre = require("starknet");
 <%= testingVars %>
 
 async function main() {
-  const contractFactory = await starknet.getContractFactory("ERC20");
-  const account = await starknet.deployAccount("OpenZeppelin");
-  const owner = account.starknetContract.address;
-
+  const contractFactory = await starknet.getContractFactory("ERC721");
   const contract = await contractFactory.deploy({
       <%= constructorCalldata %>
   });

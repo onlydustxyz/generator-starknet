@@ -7,7 +7,7 @@ async function main() {
   const owner = account.starknetContract.address;
   console.log(`Deployed account ${owner}`);
 
-  const implFactory = await starknet.getContractFactory("ERC20");
+  const implFactory = await starknet.getContractFactory("ERC721");
   const impl = await implFactory.deploy();
   console.log(`Deployed implementation ${impl.address}`);
 
